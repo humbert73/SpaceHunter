@@ -77,11 +77,15 @@ Heightfield.prototype.initParameters = function() {
 Heightfield.prototype.setParameters = function(elapsed) {
 	// un exemple d'animation, a vous de changer ca en fonction 
 	// de ce que vous souhaitez obtenir
-	this.timer = this.timer+elapsed*0.0004;
-	var speed = 2.0*(Math.sin(this.timer*0.1)*0.5+0.5);
-	this.offset[1] = this.offset[1]+elapsed*0.0004*speed;
-	this.amplitude = 0.2+3.0*(Math.sin(this.timer*0.1)*0.5+0.5);
-	this.frequency = 5.0-speed;
+	
+	if( !onPause ){
+		this.timer = this.timer+elapsed*0.0004;
+		var speed = 2.0*(Math.sin(this.timer*0.1)*0.5+0.5);
+		this.offset[1] = this.offset[1]+elapsed*0.0004*speed;
+		this.amplitude = 0.2+3.0*(Math.sin(this.timer*0.1)*0.5+0.5);
+		this.frequency = 5.0-speed;
+	}
+	
 }
 
 Heightfield.prototype.shader = function() {
