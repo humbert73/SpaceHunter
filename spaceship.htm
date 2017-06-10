@@ -1,5 +1,5 @@
 <html><head>
-<title>SpaceShip</title>
+<title>SpaceHunter</title>
 <meta http-equiv="content-type" content="text/html; charset=windows-1252">
 
 <script type="text/javascript" src="gl-matrix.js"></script>
@@ -172,10 +172,15 @@ void main(void) {
 precision highp float; // precision des nombres flottant
 
 varying vec2 vTextureCoord; // recuperation de la coord rasterisee
+uniform sampler2D uMaTexture;
+uniform float uAlpha;
 
 void main(void) {
     // couleur par defaut du vaisseau... a changer
-    gl_FragColor = vec4(1.0,0.0,0.0,1.0);
+    /*vec4 text = texture2D(uMaTexture,  vTextureCoord);
+    gl_FragColor = vec4( text.rgb, text.a * uAlpha ); // vec4(1.0,0.0,0.0,1.0);*/
+    
+    gl_FragColor = texture2D(uMaTexture,  vTextureCoord);// vec4(1.0,0.0,0.0,1.0);
 
 }
 </script>
@@ -330,6 +335,10 @@ void main(void) {
         /*document.onkeyup = handleKeyUp;*/
 
         // dessine la scene
+
+	    gl.activeTexture(gl.TEXTURE0);
+	    gl.bindTexture(gl.TEXTURE_2D,spaceship.texture);
+	    gl.uniform1i(spaceship.sendUniformVariables(), 0);
         tick();
     }
 
