@@ -335,10 +335,6 @@ void main(void) {
         /*document.onkeyup = handleKeyUp;*/
 
         // dessine la scene
-
-	    gl.activeTexture(gl.TEXTURE0);
-	    gl.bindTexture(gl.TEXTURE_2D,spaceship.texture);
-	    gl.uniform1i(spaceship.sendUniformVariables(), 0);
         tick();
     }
 

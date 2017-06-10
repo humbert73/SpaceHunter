@@ -71,12 +71,12 @@ function Spaceship() {
     console.log("spaceship initialized");
 }
 
-Spaceship.prototype.initParameters = function() {
-	this.width = 0.2;
-	this.height = 0.2;
-	this.position = [0.0,-0.7];
-	this.texture = initTexture("images/Goliath.png");
-}
+Spaceship.prototype.initParameters = function () {
+	this.width    = 0.2;
+	this.height   = 0.2;
+	this.position = [ 0.0, -0.7 ];
+	this.texture  = initTexture( 'images/Goliath.png' );
+};
 
 Spaceship.prototype.setParameters = function(elapsed) {
 	// on pourrait animer des choses ici
@@ -107,9 +107,8 @@ Spaceship.prototype.draw = function() {
 	gl.bindTexture(gl.TEXTURE_2D,spaceship.texture); // on place maTexture dans l'unité active
 	gl.uniform1i(spaceshipShader.maTextureUniform, 0); // on dit au shader que maTextureUniform se trouve sur l'unite de texture 0
 
-	/*gl.enable(gl.BLEND);
-	//gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
-	//gl.uniform1f(spaceshipShader.alphaUniform, 0);*/
+	gl.enable(gl.BLEND);
+	gl.blendFunc(gl.SRC_COLOR, gl.ONE_MINUS_SRC_ALPHA);
 
 	// dessine les buffers actifs
 	gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.triangles);
