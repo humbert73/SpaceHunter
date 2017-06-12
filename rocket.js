@@ -1,31 +1,34 @@
-var invaderShader;
+/**
+ * Created by chacatod on 12/06/17.
+ */
+var rocketShader;
 
-function initInvaderShader() {
-    invaderShader = initShaders("invader-vs","invader-fs");
+function initRocketShader() {
+    rocketShader = initShaders("rocket-vs","rocket-fs");
 
     // active ce shader
-    gl.useProgram(invaderShader);
+    gl.useProgram(rocketShader);
 
     // recupere la localisation de l'attribut dans lequel on souhaite acceder aux positions
-    invaderShader.vertexPositionAttribute = gl.getAttribLocation(invaderShader, "aVertexPosition");
-    gl.enableVertexAttribArray(invaderShader.vertexPositionAttribute); // active cet attribut 
+    rocketShader.vertexPositionAttribute = gl.getAttribLocation(rocketShader, "aVertexPosition");
+    gl.enableVertexAttribArray(rocketShader.vertexPositionAttribute); // active cet attribut 
 
     // pareil pour les coordonnees de texture 
-    invaderShader.vertexCoordAttribute = gl.getAttribLocation(invaderShader, "aVertexCoord");
-    gl.enableVertexAttribArray(invaderShader.vertexCoordAttribute);
+    rocketShader.vertexCoordAttribute = gl.getAttribLocation(rocketShader, "aVertexCoord");
+    gl.enableVertexAttribArray(rocketShader.vertexCoordAttribute);
 
     // adresse de la variable uniforme uOffset dans le shader
-    invaderShader.positionUniform = gl.getUniformLocation(invaderShader, "uPosition");
-    invaderShader.textureUniform = gl.getUniformLocation(invaderShader, "uTexture");
+    rocketShader.positionUniform = gl.getUniformLocation(rocketShader, "uPosition");
+    rocketShader.textureUniform = gl.getUniformLocation(rocketShader, "uTexture");
 
-    invaderShader.maTextureUniform = gl.getUniformLocation(invaderShader, "uMaTexture");
+    rocketShader.maTextureUniform = gl.getUniformLocation(rocketShader, "uMaTexture");
 
-    invaderShader.canalAlpha = gl.getUniformLocation(invaderShader, "uAlpha");
+    rocketShader.canalAlpha = gl.getUniformLocation(rocketShader, "uAlpha");
 
-    console.log("invader shader initialized");
+    console.log("rocket shader initialized");
 }
 
-function Invader() {
+function Rocket() {
     this.initParameters();
 
     // cree un nouveau buffer sur le GPU et l'active
@@ -69,47 +72,50 @@ function Invader() {
     gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(tri), gl.STATIC_DRAW);
     this.triangles.numItems = 6;
 
-    console.log("invader initialized");
+    console.log("rocket initialized");
 }
 
-Invader.prototype.initParameters = function () {
+Rocket.prototype.initParameters = function () {
     this.width    = 0.2;
     this.height   = 0.2;
-    this.position = [ 0.5, 0.7 ];
-    this.texture  = initTexture( 'images/Bigboy.png' );
+    this.position = [ 0.0, 0.0 ];
+    this.texture  = initTexture( 'images/rocket.png' );
 };
 
-Invader.prototype.setParameters = function(elapsed) {
+Rocket.prototype.setParameters = function(elapsed) {
     // on pourrait animer des choses ici
+        this.position[1] = this.position[1] + 0.01;
 }
 
-Invader.prototype.setPosition = function(x,y) {
+Rocket.prototype.setPosition = function(x,y) {
     this.position = [x,y];
 }
 
-Invader.prototype.shader = function() {
-    return invaderShader;
+Rocket.prototype.shader = function() {
+    return rocketShader;
 }
 
-Invader.prototype.sendUniformVariables = function() {
-    gl.uniform2fv(invaderShader.positionUniform,this.position);
-    gl.uniform1i(invaderShader.textureUniform, this.texture);
+Rocket.prototype.sendUniformVariables = function() {
+    gl.uniform2fv(rocketShader.positionUniform,this.position);
+    gl.uniform1i(rocketShader.textureUniform, this.texture);
 }
 
-Invader.prototype.draw = function() {
+Rocket.prototype.draw = function() {
     // active le buffer de position et fait le lien avec l'attribut aVertexPosition dans le shader
     gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
-    gl.vertexAttribPointer(invaderShader.vertexPositionAttribute, this.vertexBuffer.itemSize, gl.FLOAT, false, 0, 0);
+    gl.vertexAttribPointer(rocketShader.vertexPositionAttribute, this.vertexBuffer.itemSize, gl.FLOAT, false, 0, 0);
 
     // active le buffer de coords
     gl.bindBuffer(gl.ARRAY_BUFFER, this.coordBuffer);
-    gl.vertexAttribPointer(invaderShader.vertexCoordAttribute, this.coordBuffer.itemSize, gl.FLOAT, false, 0, 0);
+    gl.vertexAttribPointer(rocketShader.vertexCoordAttribute, this.coordBuffer.itemSize, gl.FLOAT, false, 0, 0);
 
     gl.activeTexture(gl.TEXTURE0); // on active l'unite de texture 0
-    gl.bindTexture(gl.TEXTURE_2D,invader.texture); // on place maTexture dans l'unité active
-    gl.uniform1i(invaderShader.maTextureUniform, 0); // on dit au shader que maTextureUniform se trouve sur l'unite de texture 0
+    gl.bindTexture(gl.TEXTURE_2D,rocket.texture); // on place maTexture dans l'unité active
+    gl.uniform1i(rocketShader.maTextureUniform, 0); // on dit au shader que maTextureUniform se trouve sur l'unite de texture 0
 
     gl.enable(gl.BLEND);
+    gl.disable(gl.DEPTH_TEST);
+
     gl.blendFunc(gl.SRC_COLOR, gl.ONE_MINUS_SRC_ALPHA);
 
     // dessine les buffers actifs
