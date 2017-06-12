@@ -22,6 +22,10 @@ function initSpaceshipShader() {
 
 	spaceshipShader.canalAlpha = gl.getUniformLocation(spaceshipShader, "uAlpha");
 
+	spaceshipShader.maTextureUniform = gl.getUniformLocation(spaceshipShader, "uMaTexture");
+
+	spaceshipShader.canalAlpha = gl.getUniformLocation(spaceshipShader, "uAlpha");
+
     console.log("spaceship shader initialized");
 }
 
@@ -111,7 +115,6 @@ Spaceship.prototype.draw = function() {
 
 	gl.enable(gl.BLEND);
 	gl.disable(gl.DEPTH_TEST);
-
 	gl.blendFunc(gl.SRC_COLOR, gl.ONE_MINUS_SRC_ALPHA);
 
 	// dessine les buffers actifs
