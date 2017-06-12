@@ -16,6 +16,11 @@ function initSpaceshipShader() {
 
      // adresse de la variable uniforme uOffset dans le shader
     spaceshipShader.positionUniform = gl.getUniformLocation(spaceshipShader, "uPosition");
+    spaceshipShader.textureUniform = gl.getUniformLocation(spaceshipShader, "uTexture");
+
+	spaceshipShader.maTextureUniform = gl.getUniformLocation(spaceshipShader, "uMaTexture");
+
+	spaceshipShader.canalAlpha = gl.getUniformLocation(spaceshipShader, "uAlpha");
 
 	spaceshipShader.maTextureUniform = gl.getUniformLocation(spaceshipShader, "uMaTexture");
 
@@ -93,6 +98,7 @@ Spaceship.prototype.shader = function() {
 
 Spaceship.prototype.sendUniformVariables = function() {
 	gl.uniform2fv(spaceshipShader.positionUniform,this.position);
+	gl.uniform1i(spaceshipShader.textureUniform, this.texture);
 }
 
 Spaceship.prototype.draw = function() {
@@ -109,6 +115,7 @@ Spaceship.prototype.draw = function() {
 	gl.uniform1i(spaceshipShader.maTextureUniform, 0); // on dit au shader que maTextureUniform se trouve sur l'unite de texture 0
 
 	gl.enable(gl.BLEND);
+	gl.disable(gl.DEPTH_TEST);
 	gl.blendFunc(gl.SRC_COLOR, gl.ONE_MINUS_SRC_ALPHA);
 
 	// dessine les buffers actifs
