@@ -467,9 +467,17 @@ void main(void) {
 	<canvas id="SpaceShip" style="border: none; /*margin: auto; display: block;*/" width="800" height="800"></canvas>
 	<h1 style="text-align: center; width:400px; position:absolute; top: 0; left: 0; background: rgba(255, 255, 255, 0.5); margin: 0; padding: 10px 0;" id="ui-score" >Current score: <span>0</span></h1>
 	<h1 style="text-align: center; width:400px; position:absolute; top: 0; left: 400px; background: rgba(255, 255, 255, 0.5); margin: 0; padding: 10px 0;" id="ui-life">Life: <span>0</span></h1>
+    <div>
     <form name="parameters">
         <label>Mode : (mode disponible : normal, psycho, tempete, caverne, mars</label>
-        <input name="mode" value="normal">
+        <select name="mode" size="1">
+            <option>normal
+            <option>psycho
+            <option>tempete
+            <option>caverne
+            <option>mars
+        </select>
     </form>
+    </div>
 </body>
 </html>
