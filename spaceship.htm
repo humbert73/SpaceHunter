@@ -219,6 +219,8 @@ void main(void) {
         gl.useProgram(spaceship.shader());
         spaceship.sendUniformVariables();
         spaceship.draw();
+	
+		document.querySelector('#ui-life > span').innerText = spaceship.life;
     }
 
     // une bonne mani�re de gerer les evenements claviers
@@ -228,14 +230,11 @@ void main(void) {
     // ----------------------------------------------------------------------------------------------------------------
 	// -------------------------- GLOBAL VAR GAME
 	// ----------------------------------------------------------------------------------------------------------------
-	// CONSTANTS
-	var MAX_LIFE = 4;
 
 	// On pause: TRUE: Game stopped / FASLE: Game run
 	var onPause = false;
 
 	var currentScore = 0;
-	var currentLife = MAX_LIFE;
 
 	function handleKeyPress( event ) {
 		//currentlyPressedKeys[event.key] = true;
@@ -248,14 +247,13 @@ void main(void) {
 
 		// New game handler
 		if ( currentKey === 'n' ) {
-			currentLife  = MAX_LIFE;
 			currentScore = 0;
 			spaceship.initParameters();
-			onPause = true;
+			onPause = true.par;
 			// TODO Do new game support
 		}
 
-		console.log( currentKey, currentScore, currentLife );
+		console.log( currentKey, currentScore, spaceship.life );
 
 	}
 
