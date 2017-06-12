@@ -420,12 +420,10 @@ void main(void) {
 
     function mouseClic(event) {
 	    if ( !onPause) {
-	        console.log(event);
 	        rocket.drawn = true;
 	        var x = 2.0 * (event.x / gl.viewportWidth) - 1.0;
 	        var y = -(2.0 * (event.y / gl.viewportHeight) - 1.0);
             rocket.setPosition(x,y);
-	        console.log(x, y);
         }
     }
 
@@ -493,7 +491,6 @@ void main(void) {
     }
 
 </script>
-
 
 </head>
 
