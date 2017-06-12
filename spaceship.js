@@ -18,6 +18,10 @@ function initSpaceshipShader() {
     spaceshipShader.positionUniform = gl.getUniformLocation(spaceshipShader, "uPosition");
     spaceshipShader.textureUniform = gl.getUniformLocation(spaceshipShader, "uTexture");
 
+	spaceshipShader.maTextureUniform = gl.getUniformLocation(spaceshipShader, "uMaTexture");
+
+	spaceshipShader.canalAlpha = gl.getUniformLocation(spaceshipShader, "uAlpha");
+
     console.log("spaceship shader initialized");
 }
 
@@ -68,12 +72,12 @@ function Spaceship() {
     console.log("spaceship initialized");
 }
 
-Spaceship.prototype.initParameters = function() {
-	this.width = 0.2;
-	this.height = 0.2;
-	this.position = [0.0,-0.7];
-	this.texture = initTexture("images/Goliath.png");
-}
+Spaceship.prototype.initParameters = function () {
+	this.width    = 0.2;
+	this.height   = 0.2;
+	this.position = [ 0.0, -0.7 ];
+	this.texture  = initTexture( 'images/Goliath.png' );
+};
 
 Spaceship.prototype.setParameters = function(elapsed) {
 	// on pourrait animer des choses ici
@@ -100,6 +104,15 @@ Spaceship.prototype.draw = function() {
 	// active le buffer de coords
 	gl.bindBuffer(gl.ARRAY_BUFFER, this.coordBuffer);
 	gl.vertexAttribPointer(spaceshipShader.vertexCoordAttribute, this.coordBuffer.itemSize, gl.FLOAT, false, 0, 0);
+
+	gl.activeTexture(gl.TEXTURE0); // on active l'unite de texture 0
+	gl.bindTexture(gl.TEXTURE_2D,spaceship.texture); // on place maTexture dans l'unité active
+	gl.uniform1i(spaceshipShader.maTextureUniform, 0); // on dit au shader que maTextureUniform se trouve sur l'unite de texture 0
+
+	gl.enable(gl.BLEND);
+	gl.disable(gl.DEPTH_TEST);
+
+	gl.blendFunc(gl.SRC_COLOR, gl.ONE_MINUS_SRC_ALPHA);
 
 	// dessine les buffers actifs
 	gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.triangles);
