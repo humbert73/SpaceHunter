@@ -17,9 +17,7 @@ function initInvaderShader() {
     // adresse de la variable uniforme uOffset dans le shader
     invaderShader.positionUniform = gl.getUniformLocation(invaderShader, "uPosition");
     invaderShader.textureUniform = gl.getUniformLocation(invaderShader, "uTexture");
-
     invaderShader.maTextureUniform = gl.getUniformLocation(invaderShader, "uMaTexture");
-
     invaderShader.canalAlpha = gl.getUniformLocation(invaderShader, "uAlpha");
 
     console.log("invader shader initialized");
@@ -82,6 +80,8 @@ Invader.prototype.initParameters = function () {
 
 Invader.prototype.setParameters = function(elapsed) {
     // on pourrait animer des choses ici
+    this.setPosition(Math.sin(this.position[0]), this.position[1]-0.005)
+    // this.position[0] = Math.sin(this.position[0]);
 }
 
 Invader.prototype.setPosition = function(x,y) {
