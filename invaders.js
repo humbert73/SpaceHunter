@@ -77,6 +77,7 @@ Invader.prototype.initParameters = function () {
     this.height   = 0.2;
     this.position = [ 0.5, 0.7 ];
     this.texture  = initTexture( 'images/Bigboy.png' );
+    this.drawn = true;
 };
 
 Invader.prototype.setParameters = function(elapsed) {

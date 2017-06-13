@@ -284,7 +284,7 @@ void main(void) {
     var invader; // l'objet invader, sa géométrie, son shader, sa maman
     var rocket; // l'objet rocket, sa géométrie, son shader, son papa
     var rockets = []; // Le tableau de rocket dessinées
-	var invaders = []; // tableau d'invaders
+	var invaders = [] // tableau d'invaders
 
     function drawScene() {
         // initialisation du viewport
@@ -315,9 +315,14 @@ void main(void) {
         spaceship.draw();
 
         // dessin de l'invader
-        gl.useProgram(invader.shader());
-        invader.sendUniformVariables();
-        invader.draw();
+        for (var i in invaders) {
+            var invader = invaders[i];
+            //if (invader.drawn) {
+                gl.useProgram(invader.shader());
+                invader.sendUniformVariables();
+                invader.draw();
+            //}
+        }
 
         // dessin d'une rocket
         for (var i in rockets) {
@@ -331,8 +336,10 @@ void main(void) {
                 delete rockets[i];
             }
         }
+
     	contactRocket();
         contactInvader();
+
 		document.querySelector('#ui-life > span').innerText = spaceship.life;
     }
 
@@ -431,7 +438,6 @@ void main(void) {
     				if( timeNow% 100  )
     					currentScore+=0.01;
     			}
-            //rocket.setParameters(elapsed);
         }
         lastTime = timeNow;
 
@@ -451,12 +457,18 @@ void main(void) {
     function contactRocket() {
         for (i in rockets) {
             rocket = rockets[i];
-            if (isTouched(rocket, invader)) {
-                rockets.splice(i, -1);
-                delete rockets[i];
-                return true;
-            } else {
-                return false;
+            console.log(rocket);
+            for (j in invaders) {
+                invader = invaders[j];
+                if ((rocket.position[0] + (rocket.width / 2.5)).toFixed(1) >= invader.position[0] - (invader.width / 2.5) && (rocket.position[0] - (rocket.width / 2.5)).toFixed(1) <= invader.position[0] + (invader.width / 2.5) && (rocket.position[1] + (rocket.height / 2.5)).toFixed(1) == invader.position[1] - (invader.height / 2)) {
+                    console.log("touché");
+                    rocket.drawn = false;
+                    invader.drawn = false;
+                    rockets.splice(i, -1);
+                    invaders.splice(j, -1);
+                    delete rockets[i];
+                    delete invaders[j];
+                }
             }
         }
     }
@@ -499,7 +511,7 @@ void main(void) {
         // init FBO
         fbo = new FBO(canvas.width,canvas.height,1,false);
 
-		initShaders();
+        initShaders();
         initObjects();
 
         // la couleur de fond sera noire
@@ -522,12 +534,18 @@ void main(void) {
             initSpaceshipShader();
             initInvaderShader();
             initRocketShader();
-        }
+		}
 
         function initObjects() {
             heightfield = new Heightfield();
             background = new Background(fbo.texture(0));
             spaceship = new Spaceship();
+            i1 = new Invader();
+            i1.setPosition(0.0, 0.0);
+            i2 = new Invader();
+            i2.setPosition(-0.2, 0.5);
+            invaders.push(i1);
+            invaders.push(i2);
             invader = new Invader();
             invaders.push(invader);
         }
@@ -536,10 +554,8 @@ void main(void) {
             canvas.addEventListener('mousedown', mouseClic, true);
             canvas.addEventListener('mousemove', mouseMove, true);
             mode.addEventListener('change', onChange, true);
-        }
+		}
     }
-
-
 
 </script>
 	<link rel="stylesheet" href="style.css" >
