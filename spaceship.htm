@@ -286,6 +286,8 @@ void main(void) {
     var spaceship; // l'objet spaceship, sa g�om�trie, son shader
     var invader; // l'objet invader, sa géométrie, son shader, sa maman
     var rocket; // l'objet rocket, sa géométrie, son shader, son papa
+    var rockets = []; // Le tableau de rocket dessinées
+	var invaders[] = [] // tableau d'invaders
 
     function drawScene() {
         // initialisation du viewport
@@ -323,7 +325,6 @@ void main(void) {
         // dessin d'une rocket
         for (var i in rockets) {
             var rocket = rockets[i];
-            console.log(rocket.drawn);
             if (rocket.drawn) {
                 gl.useProgram(rocket.shader());
                 rocket.sendUniformVariables();
@@ -333,6 +334,7 @@ void main(void) {
                 delete rockets[i];
             }
         }
+
     }
 
     // une bonne mani�re de gerer les evenements claviers
@@ -345,8 +347,6 @@ void main(void) {
 
 	// On pause: TRUE: Game stopped / FASLE: Game run
 	var onPause = false;
-
-	var rockets = [];
 
 	var currentScore = 0;
 
