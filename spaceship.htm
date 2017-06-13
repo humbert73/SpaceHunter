@@ -335,6 +335,7 @@ void main(void) {
             }
         }
 
+		document.querySelector('#ui-life > span').innerText = spaceship.life;
     }
 
     // une bonne mani�re de gerer les evenements claviers
@@ -416,23 +417,22 @@ void main(void) {
     function animate() {
         var timeNow = new Date().getTime();
         if (lastTime != 0) {
-            // chaque objet est susceptible de s'animer
-            var elapsed = timeNow - lastTime;
-            heightfield.setParameters(elapsed);
-            spaceship.setParameters(elapsed);
-            background.setParameters(elapsed);
-            
-			// Animate each rockets
-			if ( !onPause ) {
-				for ( var i in rockets ) {
-					rocket = rockets[ i ];
-					rocket.setParameters( elapsed );
-				}
-				
-				if( timeNow% 100  )
-					currentScore+=0.01;
-			}
-				
+          // chaque objet est susceptible de s'animer
+          var elapsed = timeNow - lastTime;
+          heightfield.setParameters(elapsed);
+          spaceship.setParameters(elapsed);
+          background.setParameters(elapsed);
+
+    			// Animate each rockets
+    			if ( !onPause ) {
+    				for ( var i in rockets ) {
+    					rocket = rockets[ i ];
+    					rocket.setParameters( elapsed );
+    				}
+
+    				if( timeNow% 100  )
+    					currentScore+=0.01;
+    			}
             //rocket.setParameters(elapsed);
         }
         lastTime = timeNow;
@@ -449,6 +449,23 @@ void main(void) {
         drawScene();
         animate();
     }
+
+    function contactRocket() {
+      console.log((rocket.position[0] + (rocket.width / 2)).toFixed(1));
+      console.log(invader.position[0] - (invader.width / 2));
+      for(i in rockets) {
+        rocket = rockets[i];
+        if((rocket.position[0] - (rocket.width / 2)).toFixed(1) <= invader.position[0] + (invader.width / 2) && (rocket.position[0] +(rocket.width / 2)).toFixed(1) >= invader.position[0] - (invader.width / 2) && (rocket.position[1] + (rocket.height / 2)).toFixed(1) == invader.position[1] - (invader.height / 2)) {
+          console.log("touché");
+          rockets.splice(i, -1);
+          delete rockets[i];
+          return true;
+        } else {
+          return false;
+        }
+      }
+    }
+
 
     function webGLStart() {
         // initialisation du canvas et des objets OpenGL
