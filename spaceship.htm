@@ -318,9 +318,14 @@ void main(void) {
         spaceship.draw();
 
         // dessin de l'invader
-        gl.useProgram(invader.shader());
-        invader.sendUniformVariables();
-        invader.draw();
+        for (var i in invaders) {
+            var invader = invaders[i];
+            //if (invader.drawn) {
+                gl.useProgram(invader.shader());
+                invader.sendUniformVariables();
+                invader.draw();
+            //}
+        }
 
         // dessin d'une rocket
         for (var i in rockets) {
@@ -334,7 +339,8 @@ void main(void) {
                 delete rockets[i];
             }
         }
-    contactRocket();
+
+        contactRocket();
 		document.querySelector('#ui-life > span').innerText = spaceship.life;
     }
 
@@ -433,7 +439,6 @@ void main(void) {
     				if( timeNow% 100  )
     					currentScore+=0.01;
     			}
-            //rocket.setParameters(elapsed);
         }
         lastTime = timeNow;
 
@@ -451,19 +456,20 @@ void main(void) {
     }
 
     function contactRocket() {
-      for(i in rockets) {
-        rocket = rockets[i];
-        if((rocket.position[0] + (rocket.width / 2.5)).toFixed(1) >= invader.position[0] - (invader.width / 2.5) && (rocket.position[0] - (rocket.width / 2.5)).toFixed(1) <= invader.position[0] + (invader.width / 2.5) && (rocket.position[1] + (rocket.height / 2.5)).toFixed(1) == invader.position[1] - (invader.height / 2)) {
-          console.log("touché");
-          rockets.splice(i, -1);
-          delete rockets[i];
-          return true;
-        } else {
-          return false;
+        for (i in rockets) {
+            rocket = rockets[i];
+            for (j in invaders) {
+                invader = invaders[j];
+                if ((rocket.position[0] + (rocket.width / 2.5)).toFixed(1) >= invader.position[0] - (invader.width / 2.5) && (rocket.position[0] - (rocket.width / 2.5)).toFixed(1) <= invader.position[0] + (invader.width / 2.5) && (rocket.position[1] + (rocket.height / 2.5)).toFixed(1) == invader.position[1] - (invader.height / 2)) {
+                    console.log("touché");
+                    rocket.drawn = false;
+                    invader.drawn = false;
+                    invaders.splice(j, -1);
+                    delete invaders[j];
+                }
+            }
         }
-      }
     }
-
 
     function webGLStart() {
         // initialisation du canvas et des objets OpenGL
@@ -485,7 +491,14 @@ void main(void) {
         heightfield = new Heightfield();
         background = new Background(fbo.texture(0));
         spaceship = new Spaceship();
+        i1 = new Invader();
+        i1.setPosition(0.0, 0.0);
+        i2 = new Invader();
+        i2.setPosition(-0.2, 0.5);
+        invaders.push(i1);
+        invaders.push(i2);
         invader = new Invader();
+        invaders.push(invader);
         //rocket = new Rocket();
 
         // la couleur de fond sera noire
