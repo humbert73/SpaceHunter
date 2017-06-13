@@ -422,29 +422,39 @@ void main(void) {
     function animate() {
         var timeNow = new Date().getTime();
         if (lastTime != 0) {
-          // chaque objet est susceptible de s'animer
-          var elapsed = timeNow - lastTime;
-          heightfield.setParameters(elapsed);
-          spaceship.setParameters(elapsed);
-          background.setParameters(elapsed);
+            // chaque objet est susceptible de s'animer
+            var elapsed = timeNow - lastTime;
+            heightfield.setParameters(elapsed);
+            spaceship.setParameters(elapsed);
+            background.setParameters(elapsed);
 
-    			// Animate each rockets
-    			if ( !onPause ) {
-    				for ( var i in rockets ) {
-    					rocket = rockets[ i ];
-    					rocket.setParameters( elapsed );
-    				}
+            for (var i=0; i<invaders.length; i++) {
+                invader = invaders[i];
+                invader.setParameters(elapsed);
+            }
+//            animateInvaders();
 
-    				if( timeNow% 100  )
-    					currentScore+=0.01;
-    			}
+            // Animate each rockets
+            if (!onPause) {
+                for (var i in rockets) {
+                    rocket = rockets[i];
+                    rocket.setParameters(elapsed);
+                }
+
+                if (timeNow % 100)
+                    currentScore += 0.01;
+            }
         }
         lastTime = timeNow;
 
+        function animateInvaders() {
+
+		}
+
         document.querySelector('#mode').disabled = !onPause;
-		document.querySelector('.infos').style.display = ( onPause ) ? 'block' : 'none' ;
-		document.querySelector('#ui-life > span').innerText = spaceship.life;
-		document.querySelector('#ui-score > span').innerText = Math.round( currentScore ) * 10;
+        document.querySelector('.infos').style.display = ( onPause ) ? 'block' : 'none';
+        document.querySelector('#ui-life > span').innerText = spaceship.life;
+        document.querySelector('#ui-score > span').innerText = Math.round(currentScore) * 10;
     }
 
     function tick() {
