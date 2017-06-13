@@ -428,9 +428,9 @@ void main(void) {
             spaceship.setParameters(elapsed);
             background.setParameters(elapsed);
 
-            for (var i=0; i<invaders.length; i++) {
+            for (i in invaders) {
                 invader = invaders[i];
-                invader.setParameters(elapsed);
+                //invader.setParameters(elapsed);
             }
 //            animateInvaders();
 
@@ -467,11 +467,10 @@ void main(void) {
     function contactRocket() {
         for (i in rockets) {
             rocket = rockets[i];
-            console.log(rocket);
             for (j in invaders) {
                 invader = invaders[j];
-                if ((rocket.position[0] + (rocket.width / 2.5)).toFixed(1) >= invader.position[0] - (invader.width / 2.5) && (rocket.position[0] - (rocket.width / 2.5)).toFixed(1) <= invader.position[0] + (invader.width / 2.5) && (rocket.position[1] + (rocket.height / 2.5)).toFixed(1) == invader.position[1] - (invader.height / 2)) {
-                    console.log("touché");
+                console.log("Touch = " + isTouched(rocket, invader))
+                if (isTouched(rocket, invader))     {
                     rocket.drawn = false;
                     invader.drawn = false;
                     rockets.splice(i, -1);
@@ -484,7 +483,8 @@ void main(void) {
     }
 
     function contactInvader() {
-        for (var i=0; i<invaders.length; i++) {
+        for (i in invaders) {
+            invader = invaders[i];
             if(isTouched(spaceship, invader)) {
                 spaceship.reduceLife();
                 if (! spaceship.isAlive()) {
@@ -495,8 +495,7 @@ void main(void) {
     }
 
     function isTouched(corp1, corp2) {
-
-        return isTouchedLeftSide(corp1, corp2) && isTouchedRightSide(corp1, corp2) && isTouchedBottom(corp1, corp2) && isTouchedHigh(corp1,corp2);
+        return isTouchedLeftSide(corp1, corp2) && isTouchedRightSide(corp1, corp2) && isTouchedBottom(corp1, corp2) && isTouchedTop(corp1, corp2);
 
 		function isTouchedLeftSide(corp1, corp2) {
             return (corp1.position[0] + (corp1.width / 2.5)).toFixed(1) >= (corp2.position[0] - (corp2.width / 2.5)).toFixed(1);
@@ -507,12 +506,11 @@ void main(void) {
         }
 
         function isTouchedBottom(corp1, corp2) {
-            return (corp1.position[1] + (corp1.height / 2.5)).toFixed(1) >= (corp2.position[1] - (corp2.height / 2.5)).toFixed(1);
+            return (corp1.position[1] + (corp1.height / 2.5)).toFixed(1) >= (corp2.position[1] - (corp2.height / 5.0)).toFixed(1);
 		}
 
-        function isTouchedHigh(corp1,corp2) {
-            return (corp1.position[1] - (corp1.height / 2.5)).toFixed(1) <= (corp2.position[1] + (corp2.height / 2.5)).toFixed(1);
-        }
+        function isTouchedTop(corp1, corp2) {
+            return (corp1.position[1] - (corp1.height / 2.5)).toFixed(1) <= (corp2.position[1] + (corp2.height / 5.0)).toFixed(1);        }
     }
 
 

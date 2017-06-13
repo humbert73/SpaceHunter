@@ -8,9 +8,9 @@ function initInvaderShader() {
 
     // recupere la localisation de l'attribut dans lequel on souhaite acceder aux positions
     invaderShader.vertexPositionAttribute = gl.getAttribLocation(invaderShader, "aVertexPosition");
-    gl.enableVertexAttribArray(invaderShader.vertexPositionAttribute); // active cet attribut 
+    gl.enableVertexAttribArray(invaderShader.vertexPositionAttribute); // active cet attribut
 
-    // pareil pour les coordonnees de texture 
+    // pareil pour les coordonnees de texture
     invaderShader.vertexCoordAttribute = gl.getAttribLocation(invaderShader, "aVertexCoord");
     gl.enableVertexAttribArray(invaderShader.vertexCoordAttribute);
 
@@ -80,8 +80,8 @@ Invader.prototype.initParameters = function () {
 
 Invader.prototype.setParameters = function(elapsed) {
     // on pourrait animer des choses ici
-    this.setPosition(Math.sin(this.position[0]), this.position[1]-0.005)
-    // this.position[0] = Math.sin(this.position[0]);
+    //this.setPosition(Math.sin(this.position[0]), this.position[1]-0.005)
+    //this.position[0] = Math.sin(this.position[0]);
 }
 
 Invader.prototype.setPosition = function(x,y) {
@@ -117,5 +117,3 @@ Invader.prototype.draw = function() {
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.triangles);
     gl.drawElements(gl.TRIANGLES, this.triangles.numItems, gl.UNSIGNED_SHORT, 0);
 }
-
-
