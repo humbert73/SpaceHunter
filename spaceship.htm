@@ -430,7 +430,7 @@ void main(void) {
 
             for (i in invaders) {
                 invader = invaders[i];
-                //invader.setParameters(elapsed);
+                invader.setParameters(elapsed);
             }
 //            animateInvaders();
 
@@ -469,8 +469,8 @@ void main(void) {
             rocket = rockets[i];
             for (j in invaders) {
                 invader = invaders[j];
-                console.log("Touch = " + isTouched(rocket, invader))
-                if (isTouched(rocket, invader))     {
+                console.log("Touch = " + hasCollision(rocket, invader))
+                if (hasCollision(rocket, invader))     {
                     rocket.drawn = false;
                     invader.drawn = false;
                     rockets.splice(i, -1);
@@ -485,7 +485,7 @@ void main(void) {
     function contactInvader() {
         for (i in invaders) {
             invader = invaders[i];
-            if(isTouched(spaceship, invader)) {
+            if(hasCollision(spaceship, invader)) {
                 spaceship.reduceLife();
                 if (! spaceship.isAlive()) {
 					//TODO: doSomeThingWhenYouLoose
@@ -494,23 +494,27 @@ void main(void) {
 		}
     }
 
-    function isTouched(corp1, corp2) {
-        return isTouchedLeftSide(corp1, corp2) && isTouchedRightSide(corp1, corp2) && isTouchedBottom(corp1, corp2) && isTouchedTop(corp1, corp2);
+    function hasCollision(corp1, corp2) {
 
-		function isTouchedLeftSide(corp1, corp2) {
-            return (corp1.position[0] + (corp1.width / 2.5)).toFixed(1) >= (corp2.position[0] - (corp2.width / 2.5)).toFixed(1);
+        return hasXCollision(corp1, corp2) && hasYCollision(corp1, corp2);
+
+        function hasXCollision(corp1, corp2) {
+            var corpt1_xleft = corp1.position[0]-(corp1.width/2);
+            var corpt1_xright = corp1.position[0]+(corp1.width/2);
+            var corpt2_xleft = corp2.position[0]-(corp2.width/2);
+            var corpt2_xright = corp2.position[0]+(corp2.width/2);
+
+            return (corpt1_xleft >= corpt2_xleft && corpt1_xleft <= corpt2_xright) || (corpt1_xright >= corpt2_xleft && corpt1_xright <= corpt2_xright);
 		}
 
-        function isTouchedRightSide(corp1, corp2) {
-            return (corp1.position[0] - (corp1.width / 2.5)).toFixed(1) <= (corp2.position[0] + (corp2.width / 2.5)).toFixed(1);
+        function hasYCollision(corp1, corp2) {
+            var corpt1_ytop = corp1.position[1]+(corp1.width/2);
+            var corpt1_ybottom = corp1.position[1]-(corp1.width/2);
+            var corpt2_ytop = corp2.position[1]+(corp2.width/2);
+            var corpt2_ybottom = corp2.position[1]-(corp2.width/2);
+
+            return (corpt1_ytop <= corpt2_ytop && corpt1_ytop >= corpt2_ybottom) || (corpt1_ybottom <= corpt2_ytop && corpt1_ybottom >= corpt2_ybottom);
         }
-
-        function isTouchedBottom(corp1, corp2) {
-            return (corp1.position[1] + (corp1.height / 2.5)).toFixed(1) >= (corp2.position[1] - (corp2.height / 5.0)).toFixed(1);
-		}
-
-        function isTouchedTop(corp1, corp2) {
-            return (corp1.position[1] - (corp1.height / 2.5)).toFixed(1) <= (corp2.position[1] + (corp2.height / 5.0)).toFixed(1);        }
     }
 
 
