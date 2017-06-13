@@ -124,7 +124,8 @@ Spaceship.prototype.draw = function () {
 
     gl.enable(gl.BLEND);
     gl.disable(gl.DEPTH_TEST);
-    gl.blendFunc(gl.SRC_COLOR, gl.ONE_MINUS_SRC_ALPHA);
+    gl.blendEquation( gl.FUNC_ADD );
+    gl.blendFunc( gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA );
 
     // dessine les buffers actifs
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.triangles);

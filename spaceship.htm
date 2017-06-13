@@ -1,18 +1,19 @@
-<html><head>
-<title>SpaceHunter</title>
-<meta http-equiv="content-type" content="text/html; charset=windows-1252">
+<html>
+<head>
+    <title>SpaceHunter</title>
+    <meta http-equiv="content-type" content="text/html; charset=windows-1252">
 
-<script type="text/javascript" src="gl-matrix.js"></script>
-<script type="text/javascript" src="webgl-utils.js"></script>
-<script type="text/javascript" src="game-utils.js"></script>
-<script type="text/javascript" src="fbo.js"></script>
-<script type="text/javascript" src="heightfield.js"></script>
-<script type="text/javascript" src="background.js"></script>
-<script type="text/javascript" src="spaceship.js"></script>
-<script type="text/javascript" src="invaders.js"></script>
-<script src="rocket.js"></script>
+    <script type="text/javascript" src="gl-matrix.js"></script>
+    <script type="text/javascript" src="webgl-utils.js"></script>
+    <script type="text/javascript" src="game-utils.js"></script>
+    <script type="text/javascript" src="fbo.js"></script>
+    <script type="text/javascript" src="heightfield.js"></script>
+    <script type="text/javascript" src="background.js"></script>
+    <script type="text/javascript" src="spaceship.js"></script>
+    <script type="text/javascript" src="invaders.js"></script>
+    <script src="rocket.js"></script>
 
-<script id="heightfield-vs" type="x-shader/x-vertex">
+    <script id="heightfield-vs" type="x-shader/x-vertex">
     // *** le vertex shader ***
     attribute vec3 aVertexPosition; // la position du sommet
     attribute vec2 aVertexCoord; // sa coordonnee de texture
@@ -26,9 +27,10 @@
         // stockage de la coordonnee de texture
         vTextureCoord = aVertexCoord;
     }
-</script>
 
-<script id="heightfield-fs" type="x-shader/x-fragment">
+    </script>
+
+    <script id="heightfield-fs" type="x-shader/x-fragment">
 // *** le fragment shader ***
 precision highp float; // precision des nombres flottant
 
@@ -81,9 +83,10 @@ void main(void) {
     gl_FragColor = vec4(vec3(n),1.0);
 
 }
-</script>
 
-<script id="background-vs" type="x-shader/x-vertex">
+    </script>
+
+    <script id="background-vs" type="x-shader/x-vertex">
     // *** le vertex shader ***
     attribute vec3 aVertexPosition; // la position du sommet
     attribute vec2 aVertexCoord; // sa coordonnee de texture
@@ -98,9 +101,10 @@ void main(void) {
         // stockage de la coordonnee de texture
         vTextureCoord = aVertexCoord;
     }
-</script>
 
-<script id="background-fs" type="x-shader/x-fragment">
+    </script>
+
+    <script id="background-fs" type="x-shader/x-fragment">
 // *** le fragment shader ***
 precision highp float; // precision des nombres flottant
 
@@ -167,9 +171,10 @@ void main(void) {
     gl_FragColor = vec4(s,1.0);
 
 }
-</script>
 
-<script id="spaceship-vs" type="x-shader/x-vertex">
+    </script>
+
+    <script id="spaceship-vs" type="x-shader/x-vertex">
     // *** le vertex shader ***
     attribute vec3 aVertexPosition; // la position du sommet
     attribute vec2 aVertexCoord; // sa coordonnee de texture
@@ -184,8 +189,9 @@ void main(void) {
         // stockage de la coordonnee de texture
         vTextureCoord = aVertexCoord;
     }
-</script>
-<script id="spaceship-fs" type="x-shader/x-fragment">
+
+    </script>
+    <script id="spaceship-fs" type="x-shader/x-fragment">
 // *** le fragment shader ***
 precision highp float; // precision des nombres flottant
 
@@ -201,9 +207,10 @@ void main(void) {
     gl_FragColor = texture2D(uMaTexture,  vTextureCoord);// vec4(1.0,0.0,0.0,1.0);
 
 }
-</script>
 
-<script id="invader-vs" type="x-shader/x-vertex">
+    </script>
+
+    <script id="invader-vs" type="x-shader/x-vertex">
     // *** le vertex shader ***
     attribute vec3 aVertexPosition; // la position du sommet
     attribute vec2 aVertexCoord; // sa coordonnee de texture
@@ -218,9 +225,10 @@ void main(void) {
         // stockage de la coordonnee de texture
         vTextureCoord = aVertexCoord;
     }
-</script>
 
-<script id="invader-fs" type="x-shader/x-fragment">
+    </script>
+
+    <script id="invader-fs" type="x-shader/x-fragment">
 // *** le fragment shader ***
 precision highp float; // precision des nombres flottant
 
@@ -239,9 +247,10 @@ void main(void) {
 }
 
 
-</script>
 
-<script id="rocket-vs" type="x-shader/x-vertex">
+    </script>
+
+    <script id="rocket-vs" type="x-shader/x-vertex">
     // *** le vertex shader ***
     attribute vec3 aVertexPosition; // la position du sommet
     attribute vec2 aVertexCoord; // sa coordonnee de texture
@@ -256,9 +265,10 @@ void main(void) {
         // stockage de la coordonnee de texture
         vTextureCoord = aVertexCoord;
     }
-</script>
 
-<script id="rocket-fs" type="x-shader/x-fragment">
+    </script>
+
+    <script id="rocket-fs" type="x-shader/x-fragment">
     // *** le fragment shader ***
     precision highp float; // precision des nombres flottant
 
@@ -273,309 +283,310 @@ void main(void) {
 
         gl_FragColor = texture2D(uMaTexture,  vTextureCoord);// vec4(1.0,0.0,0.0,1.0);
     }
-</script>
 
-<script type="text/javascript">
+    </script>
 
-    var fbo; // le FBO utilis� pour rendre la texture de hauteur
-    var heightfield; // l'objet heightfield, sa g�om�trie, son shader
-    var background; // l'objet background, sa g�om�trie, son shader
-    var spaceship; // l'objet spaceship, sa g�om�trie, son shader
-    var invader; // l'objet invader, sa géométrie, son shader, sa maman
-    var rocket; // l'objet rocket, sa géométrie, son shader, son papa
-    var rockets = []; // Le tableau de rocket dessinées
-	var invaders = [] // tableau d'invaders
+    <script type="text/javascript">
 
-    function drawScene() {
-        // initialisation du viewport
-        gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
+        var fbo; // le FBO utilis� pour rendre la texture de hauteur
+        var heightfield; // l'objet heightfield, sa g�om�trie, son shader
+        var background; // l'objet background, sa g�om�trie, son shader
+        var spaceship; // l'objet spaceship, sa g�om�trie, son shader
+        var invader; // l'objet invader, sa géométrie, son shader, sa maman
+        var rocket; // l'objet rocket, sa géométrie, son shader, son papa
+        var rockets = []; // Le tableau de rocket dessinées
+        var invaders = [] // tableau d'invaders
 
-        // efface les buffers de couleur et de profondeur
-        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+        function drawScene() {
+            // initialisation du viewport
+            gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
 
-        // active le FBO (a partie de la, on dessine dans la texture associ�e)
-        gl.bindFramebuffer(gl.FRAMEBUFFER,fbo.id());
+            // efface les buffers de couleur et de profondeur
+            gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-        // dessin du heightfield
-        gl.useProgram(heightfield.shader());
-        heightfield.sendUniformVariables();
-        heightfield.draw();
+            // active le FBO (a partie de la, on dessine dans la texture associ�e)
+            gl.bindFramebuffer(gl.FRAMEBUFFER, fbo.id());
 
-        // desactivation du FBO (on dessine sur l'ecran maintenant)
-        gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+            // dessin du heightfield
+            gl.useProgram(heightfield.shader());
+            heightfield.sendUniformVariables();
+            heightfield.draw();
 
-        // dessin du background (utilise la texture dessin�e pr�c�demment)
-        gl.useProgram(background.shader());
-        background.sendUniformVariables();
-        background.draw();
+            // desactivation du FBO (on dessine sur l'ecran maintenant)
+            gl.bindFramebuffer(gl.FRAMEBUFFER, null);
 
-        // dessin du vaisseau (shader par defaut ici)
-        gl.useProgram(spaceship.shader());
-        spaceship.sendUniformVariables();
-        spaceship.draw();
+            // dessin du background (utilise la texture dessin�e pr�c�demment)
+            gl.useProgram(background.shader());
+            background.sendUniformVariables();
+            background.draw();
 
-        // dessin de l'invader
-        for (var i in invaders) {
-            var invader = invaders[i];
-            //if (invader.drawn) {
+            // dessin du vaisseau (shader par defaut ici)
+            gl.useProgram(spaceship.shader());
+            spaceship.sendUniformVariables();
+            spaceship.draw();
+
+            // dessin de l'invader
+            for (var i in invaders) {
+                var invader = invaders[i];
+                //if (invader.drawn) {
                 gl.useProgram(invader.shader());
                 invader.sendUniformVariables();
                 invader.draw();
-            //}
+                //}
+            }
+
+            // dessin d'une rocket
+            for (var i in rockets) {
+                var rocket = rockets[i];
+                if (rocket.drawn) {
+                    gl.useProgram(rocket.shader());
+                    rocket.sendUniformVariables();
+                    rocket.draw();
+                } else {
+                    rockets.splice(i, -1);
+                    delete rockets[i];
+                }
+            }
+
+            contactRocket();
+            contactInvader();
+
+            document.querySelector('#ui-life > span').innerText = spaceship.life;
         }
 
-        // dessin d'une rocket
-        for (var i in rockets) {
-            var rocket = rockets[i];
-            if (rocket.drawn) {
-                gl.useProgram(rocket.shader());
-                rocket.sendUniformVariables();
-                rocket.draw();
-            } else {
-                rockets.splice(i, -1);
-                delete rockets[i];
+        // une bonne mani�re de gerer les evenements claviers
+        // permet d'avoir plusieurs touches appuy�es simultan�men
+        var currentlyPressedKeys = {};
+
+        // ----------------------------------------------------------------------------------------------------------------
+        // -------------------------- GLOBAL VAR GAME
+        // ----------------------------------------------------------------------------------------------------------------
+
+        // On pause: TRUE: Game stopped / FASLE: Game run
+        var onPause = false;
+
+        var currentScore = 0;
+
+        function handleKeyPress(event) {
+            //currentlyPressedKeys[event.key] = true;
+
+            var currentKey = event.key;
+
+            // Play / pause handler
+            if (currentKey === 'p')
+                onPause = !onPause;
+
+            // New game handler
+            if (currentKey === 'n') {
+                currentScore = 0;
+                spaceship.initParameters();
+                onPause = true;
+
+                for (var i in rockets)
+                    delete rockets[i];
+
+                // TODO Do new game support
+            }
+
+            console.log(currentKey, currentScore, spaceship.life);
+
+        }
+
+
+        function handleKeyUp(event) {
+            currentlyPressedKeys[event.key] = false;
+        }
+
+        function handleKeys() {
+
+        }
+
+        function mouseMove(event) {
+
+            if (!onPause) {
+                // controle de la position du vaisseau en fonction de la souris
+                // la position est remapp�e entre -1 et 1 pour cela
+                var newx = 2.0 * (event.clientX / gl.viewportWidth) - 1.0;
+                var newy = -(2.0 * (event.clientY / gl.viewportHeight) - 1.0);
+                spaceship.setPosition(newx, newy);
             }
         }
 
-    	contactRocket();
-        contactInvader();
-
-		document.querySelector('#ui-life > span').innerText = spaceship.life;
-    }
-
-    // une bonne mani�re de gerer les evenements claviers
-    // permet d'avoir plusieurs touches appuy�es simultan�men
-    var currentlyPressedKeys = {};
-
-    // ----------------------------------------------------------------------------------------------------------------
-	// -------------------------- GLOBAL VAR GAME
-	// ----------------------------------------------------------------------------------------------------------------
-
-	// On pause: TRUE: Game stopped / FASLE: Game run
-	var onPause = false;
-
-	var currentScore = 0;
-
-	function handleKeyPress( event ) {
-		//currentlyPressedKeys[event.key] = true;
-
-		var currentKey = event.key;
-
-		// Play / pause handler
-		if ( currentKey === 'p' )
-			onPause = !onPause;
-
-		// New game handler
-		if ( currentKey === 'n' ) {
-			currentScore = 0;
-			spaceship.initParameters();
-			onPause = true;
-
-			for ( var i in rockets )
-				delete rockets[ i ];
-
-			// TODO Do new game support
-		}
-
-		console.log( currentKey, currentScore, spaceship.life );
-
-	}
-
-
-    function handleKeyUp(event) {
-        currentlyPressedKeys[event.key] = false;
-    }
-
-	function handleKeys() {
-
-	}
-
-    function mouseMove(event) {
-
-	    if ( !onPause ) {
-		    // controle de la position du vaisseau en fonction de la souris
-		    // la position est remapp�e entre -1 et 1 pour cela
-		    var newx = 2.0 * (event.clientX / gl.viewportWidth) - 1.0;
-		    var newy = -(2.0 * (event.clientY / gl.viewportHeight) - 1.0);
-		    spaceship.setPosition( newx, newy );
-	    }
-    }
-
-    function mouseClic(event) {
-	    if ( !onPause) {
-            rocket = new Rocket();
-	        rocket.drawn = true;
-	        var x = 2.0 * (event.x / gl.viewportWidth) - 1.0;
-	        var y = -(2.0 * (event.y / gl.viewportHeight) - 1.0);
-            rocket.setPosition(x,y);
-            rockets.push(rocket);
+        function mouseClic(event) {
+            if (!onPause) {
+                rocket = new Rocket();
+                rocket.drawn = true;
+                var x = 2.0 * (event.x / gl.viewportWidth) - 1.0;
+                var y = -(2.0 * (event.y / gl.viewportHeight) - 1.0);
+                rocket.setPosition(x, y);
+                rockets.push(rocket);
+            }
+            event.preventDefault();
         }
-        event.preventDefault();
-    }
 
-    function onChange() {
-		this.blur();
-	}
-
-    // animation
-    var lastTime = 0;
-    function animate() {
-        var timeNow = new Date().getTime();
-        if (lastTime != 0) {
-          // chaque objet est susceptible de s'animer
-          var elapsed = timeNow - lastTime;
-          heightfield.setParameters(elapsed);
-          spaceship.setParameters(elapsed);
-          background.setParameters(elapsed);
-
-    			// Animate each rockets
-    			if ( !onPause ) {
-    				for ( var i in rockets ) {
-    					rocket = rockets[ i ];
-    					rocket.setParameters( elapsed );
-    				}
-
-    				if( timeNow% 100  )
-    					currentScore+=0.01;
-    			}
+        function onChange() {
+            this.blur();
         }
-        lastTime = timeNow;
 
-        document.querySelector('#mode').disabled = !onPause;
-		document.querySelector('.infos').style.display = ( onPause ) ? 'block' : 'none' ;
-		document.querySelector('#ui-life > span').innerText = spaceship.life;
-		document.querySelector('#ui-score > span').innerText = Math.round( currentScore ) * 10;
-    }
+        // animation
+        var lastTime = 0;
+        function animate() {
+            var timeNow = new Date().getTime();
+            if (lastTime != 0) {
+                // chaque objet est susceptible de s'animer
+                var elapsed = timeNow - lastTime;
+                heightfield.setParameters(elapsed);
+                spaceship.setParameters(elapsed);
+                background.setParameters(elapsed);
 
-    function tick() {
-        requestAnimFrame(tick);
-       	handleKeys();
-        drawScene();
-        animate();
-    }
+                // Animate each rockets
+                if (!onPause) {
+                    for (var i in rockets) {
+                        rocket = rockets[i];
+                        rocket.setParameters(elapsed);
+                    }
 
-    function contactRocket() {
-        for (i in rockets) {
-            rocket = rockets[i];
-            console.log(rocket);
-            for (j in invaders) {
-                invader = invaders[j];
-                if ((rocket.position[0] + (rocket.width / 2.5)).toFixed(1) >= invader.position[0] - (invader.width / 2.5) && (rocket.position[0] - (rocket.width / 2.5)).toFixed(1) <= invader.position[0] + (invader.width / 2.5) && (rocket.position[1] + (rocket.height / 2.5)).toFixed(1) == invader.position[1] - (invader.height / 2)) {
-                    console.log("touché");
-                    rocket.drawn = false;
-                    invader.drawn = false;
-                    rockets.splice(i, -1);
-                    invaders.splice(j, -1);
-                    delete rockets[i];
-                    delete invaders[j];
+                    if (timeNow % 100)
+                        currentScore += 0.01;
+                }
+            }
+            lastTime = timeNow;
+
+            document.querySelector('#mode').disabled = !onPause;
+            document.querySelector('.infos').style.display = ( onPause ) ? 'block' : 'none';
+            document.querySelector('#ui-life > span').innerText = spaceship.life;
+            document.querySelector('#ui-score > span').innerText = Math.round(currentScore) * 10;
+        }
+
+        function tick() {
+            requestAnimFrame(tick);
+            handleKeys();
+            drawScene();
+            animate();
+        }
+
+        function contactRocket() {
+            for (i in rockets) {
+                rocket = rockets[i];
+                console.log(rocket);
+                for (j in invaders) {
+                    invader = invaders[j];
+                    if ((rocket.position[0] + (rocket.width / 2.5)).toFixed(1) >= invader.position[0] - (invader.width / 2.5) && (rocket.position[0] - (rocket.width / 2.5)).toFixed(1) <= invader.position[0] + (invader.width / 2.5) && (rocket.position[1] + (rocket.height / 2.5)).toFixed(1) == invader.position[1] - (invader.height / 2)) {
+                        console.log("touché");
+                        rocket.drawn = false;
+                        invader.drawn = false;
+                        rockets.splice(i, -1);
+                        invaders.splice(j, -1);
+                        delete rockets[i];
+                        delete invaders[j];
+                    }
                 }
             }
         }
-    }
 
-    function contactInvader() {
-        for (var i=0; i<invaders.length; i++) {
-            if(isTouched(spaceship, invader)) {
-                spaceship.reduceLife();
-                if (! spaceship.isAlive()) {
-					//TODO: doSomeThingWhenYouLoose
-				}
+        function contactInvader() {
+            for (var i = 0; i < invaders.length; i++) {
+                if (isTouched(spaceship, invader)) {
+                    spaceship.reduceLife();
+                    if (!spaceship.isAlive()) {
+                        //TODO: doSomeThingWhenYouLoose
+                    }
+                }
             }
-		}
-    }
-
-    function isTouched(corp1, corp2) {
-
-        return isTouchedLeftSide(corp1, corp2) && isTouchedRightSide(corp1, corp2) && isTouchedBottom(corp1, corp2);
-
-		function isTouchedLeftSide(corp1, corp2) {
-            return (corp1.position[0] + (corp1.width / 2.5)).toFixed(1) >= (corp2.position[0] - (corp2.width / 2.5)).toFixed(1);
-		}
-
-        function isTouchedRightSide(corp1, corp2) {
-            return (corp1.position[0] - (corp1.width / 2.5)).toFixed(1) <= (corp2.position[0] + (corp2.width / 2.5)).toFixed(1);
         }
 
-        function isTouchedBottom(corp1, corp2) {
-            return (corp1.position[1] + (corp1.height / 2.5)).toFixed(1) == (corp2.position[1] - (corp2.height / 2.5)).toFixed(1);
-		}
-    }
+        function isTouched(corp1, corp2) {
 
+            return isTouchedLeftSide(corp1, corp2) && isTouchedRightSide(corp1, corp2) && isTouchedBottom(corp1, corp2);
 
-    function webGLStart() {
-        // initialisation du canvas et des objets OpenGL
-        var canvas = document.getElementById("SpaceShip");
-		var mode = document.querySelector( '#mode' );
-        initGL(canvas);
+            function isTouchedLeftSide(corp1, corp2) {
+                return (corp1.position[0] + (corp1.width / 2.5)).toFixed(1) >= (corp2.position[0] - (corp2.width / 2.5)).toFixed(1);
+            }
 
-        // init FBO
-        fbo = new FBO(canvas.width,canvas.height,1,false);
+            function isTouchedRightSide(corp1, corp2) {
+                return (corp1.position[0] - (corp1.width / 2.5)).toFixed(1) <= (corp2.position[0] + (corp2.width / 2.5)).toFixed(1);
+            }
 
-        initShaders();
-        initObjects();
-
-        // la couleur de fond sera noire
-        gl.clearColor(0.0, 0.0, 0.0, 1.0);
-
-        // active le teste de profondeur
-        gl.enable(gl.DEPTH_TEST);
-
-        addMouseAndKeyboardInteraction();
-
-        document.onkeypress = handleKeyPress;
-        /*document.onkeyup = handleKeyUp;*/
-
-        // dessine la scene
-        tick();
-
-        function initShaders() {
-            initHeightfieldShader();
-            initBackgroundShader();
-            initSpaceshipShader();
-            initInvaderShader();
-            initRocketShader();
-		}
-
-        function initObjects() {
-            heightfield = new Heightfield();
-            background = new Background(fbo.texture(0));
-            spaceship = new Spaceship();
-            i1 = new Invader();
-            i1.setPosition(0.0, 0.0);
-            i2 = new Invader();
-            i2.setPosition(-0.2, 0.5);
-            invaders.push(i1);
-            invaders.push(i2);
-            invader = new Invader();
-            invaders.push(invader);
+            function isTouchedBottom(corp1, corp2) {
+                return (corp1.position[1] + (corp1.height / 2.5)).toFixed(1) == (corp2.position[1] - (corp2.height / 2.5)).toFixed(1);
+            }
         }
 
-        function addMouseAndKeyboardInteraction() {
-            canvas.addEventListener('mousedown', mouseClic, true);
-            canvas.addEventListener('mousemove', mouseMove, true);
-            mode.addEventListener('change', onChange, true);
-		}
-    }
 
-</script>
-	<link rel="stylesheet" href="style.css" >
+        function webGLStart() {
+            // initialisation du canvas et des objets OpenGL
+            var canvas = document.getElementById("SpaceShip");
+            var mode = document.querySelector('#mode');
+            initGL(canvas);
+
+            // init FBO
+            fbo = new FBO(canvas.width, canvas.height, 1, false);
+
+            initShaders();
+            initObjects();
+
+            // la couleur de fond sera noire
+            gl.clearColor(0.0, 0.0, 0.0, 1.0);
+
+            // active le teste de profondeur
+            gl.enable(gl.DEPTH_TEST);
+
+            addMouseAndKeyboardInteraction();
+
+            document.onkeypress = handleKeyPress;
+            /*document.onkeyup = handleKeyUp;*/
+
+            // dessine la scene
+            tick();
+
+            function initShaders() {
+                initHeightfieldShader();
+                initBackgroundShader();
+                initSpaceshipShader();
+                initInvaderShader();
+                initRocketShader();
+            }
+
+            function initObjects() {
+                heightfield = new Heightfield();
+                background = new Background(fbo.texture(0));
+                spaceship = new Spaceship();
+                i1 = new Invader();
+                i1.setPosition(0.0, 0.0);
+                i2 = new Invader();
+                i2.setPosition(-0.2, 0.5);
+                invaders.push(i1);
+                invaders.push(i2);
+                invader = new Invader();
+                invaders.push(invader);
+            }
+
+            function addMouseAndKeyboardInteraction() {
+                canvas.addEventListener('mousedown', mouseClic, true);
+                canvas.addEventListener('mousemove', mouseMove, true);
+                mode.addEventListener('change', onChange, true);
+            }
+        }
+
+    </script>
+    <link rel="stylesheet" href="style.css">
 
 </head>
 
-<body onload="webGLStart();" >
-	<canvas id="SpaceShip" width="800" height="800"></canvas>
-	<h1 id="ui-score" >Current score: <span>0</span></h1>
-	<h1 id="ui-life">Life: <span>0</span></h1>
-	<div class="infos" >
-		<h2 >PAUSE</h2 >
-		<p >
-			Press <kbd >P</kbd > to set or unset pause<br />
-			Press <kbd >N</kbd > for a new game<br/><br/>
+<body onload="webGLStart();">
+<canvas id="SpaceShip" width="800" height="800"></canvas>
+<h1 id="ui-score">Current score: <span>0</span></h1>
+<h1 id="ui-life">Life: <span>0</span></h1>
+<div class="infos">
+    <h2>PAUSE</h2>
+    <p>
+        Press <kbd>P</kbd> to set or unset pause<br/>
+        Press <kbd>N</kbd> for a new game<br/><br/>
 
-			Change mode is allowed only when the game are on PAUSE
-		</p >
-	</div >
-    <div>
+        Change mode is allowed only when the game are on PAUSE
+    </p>
+</div>
+<div>
     <form name="parameters">
         <label for="mode">Mode (change only available on pause):</label>
         <select id="mode" name="mode" size="1">
@@ -586,7 +597,7 @@ void main(void) {
             <option>mars
         </select>
     </form>
-		<kbd>P</kbd>: Pause -- <kbd>N</kbd>: New game
-    </div>
+    <kbd>P</kbd>: Pause -- <kbd>N</kbd>: New game
+</div>
 </body>
 </html>
