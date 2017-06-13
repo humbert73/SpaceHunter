@@ -77,19 +77,32 @@ Spaceship.prototype.initParameters = function () {
     this.position = [0.0, -0.7];
     this.life = 100;
     this.texture = initTexture('images/Goliath.png');
+
+};
+
+Spaceship.prototype.isAlive = function() {
+    return this.life > 0;
+};
+
+Spaceship.prototype.reduceLife = function() {
+	if (this.isAlive()) {
+        this.life--;
+	} else {
+		this.life = 0;
+	}
 };
 
 Spaceship.prototype.setParameters = function(elapsed) {
 	// on pourrait animer des choses ici
-}
+};
 
 Spaceship.prototype.setPosition = function(x,y) {
 	this.position = [x,y];
-}
+};
 
 Spaceship.prototype.shader = function() {
 	return spaceshipShader;
-}
+};
 
 Spaceship.prototype.sendUniformVariables = function() {
 	gl.uniform2fv(spaceshipShader.positionUniform,this.position);
