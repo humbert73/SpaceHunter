@@ -376,11 +376,6 @@ void main(void) {
 
 	}
 
-
-    function handleKeyUp(event) {
-        currentlyPressedKeys[event.key] = false;
-    }
-
 	function handleKeys() {
  
 	}
@@ -488,7 +483,6 @@ void main(void) {
         background = new Background(fbo.texture(0));
         spaceship = new Spaceship();
         invader = new Invader();
-        //rocket = new Rocket();
 
         // la couleur de fond sera noire
         gl.clearColor(0.0, 0.0, 0.0, 1.0);
