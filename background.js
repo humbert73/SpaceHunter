@@ -18,6 +18,14 @@ function initBackgroundShader() {
     backgroundShader.heightfieldUniform = gl.getUniformLocation(backgroundShader, "uHeightfield");
     backgroundShader.textureSizeUniform = gl.getUniformLocation(backgroundShader, "uTextureSize");
 
+    // color
+    backgroundShader.colorKa= gl.getUniformLocation(backgroundShader, "colorKa");
+    backgroundShader.colorKd = gl.getUniformLocation(backgroundShader, "colorKd");
+    backgroundShader.colorKs = gl.getUniformLocation(backgroundShader, "colorKs");
+    backgroundShader.colorLi = gl.getUniformLocation(backgroundShader, "colorLi");
+    backgroundShader.colorQ = gl.getUniformLocation(backgroundShader, "colorQ");
+    backgroundShader.colorMode =  gl.getUniformLocation(backgroundShader, "mode");
+
     console.log("background shader initialized");
 }
 
@@ -80,6 +88,64 @@ Background.prototype.sendUniformVariables = function() {
 	gl.activeTexture(gl.TEXTURE0);
     gl.bindTexture(gl.TEXTURE_2D,this.heightfieldTexture);
     gl.uniform1i(backgroundShader.heightfieldUniform, 0);
+
+    // mode disponible :
+	// normal, psycho, tempete, caverne, mars
+    sendUniformVariablesByMode(document.parameters.mode.value);
+
+    function sendUniformVariablesByMode(mode) {
+    	var modeNum=-1;
+    	var ka;
+    	var kd;
+    	var ks;
+    	var li;
+    	var q;
+    	switch(mode) {
+			case 'psycho':
+                modeNum = 0;
+                ka = [0.1,0.1,0.5];
+                kd = [0.5,0.5,0.5];
+                ks = [0.7,0.7,0.7];
+                li = [0.7,0.7,0.7];
+                q = 1.0;
+				break;
+            case 'tempete':
+                modeNum = 1;
+                ka = [0,0,0];
+                kd = [0.5,0.5,0.5];
+                ks = [0.3,0.7,0.5];
+                li = [0.5,0.5,0.5];
+                q = 10000.0;
+                break;
+            case 'caverne':
+                ka = [0.0,0.0,0.2];
+                kd = [0.5,0.5,0.5];
+                ks = [0.0,0.0,0.5];
+                li = [0.6,0.6,0.6];
+                q = 1.0;
+                break;
+            case 'mars':
+                ka = [0.3,0.1,0.0];
+                kd = [0.5,0.5,0.5];
+                ks = [0.8,0.5,0.0];
+                li = [0.5,0.5,0.5];
+                q = 1.0;
+                break;
+			default:
+                ka = [0.1,0.1,0.3];
+                kd = [0.0,0.0,0.0];
+                ks = [0.5,0.5,0.5];
+                li = [0.5,0.5,0.5];
+                q = 1.0;
+		}
+
+		gl.uniform1i(backgroundShader.colorMode, modeNum);
+        gl.uniform3fv(backgroundShader.colorKa, ka);
+        gl.uniform3fv(backgroundShader.colorKd, kd);
+        gl.uniform3fv(backgroundShader.colorKs, ks);
+        gl.uniform3fv(backgroundShader.colorLi, li);
+        gl.uniform1f(backgroundShader.colorQ, q);
+    }
 }
 
 Background.prototype.draw = function() {
