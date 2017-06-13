@@ -132,11 +132,11 @@ Background.prototype.sendUniformVariables = function() {
                 q = 1.0;
                 break;
 			default:
-                ka = [0.1,0.1,0.3];
-                kd = [0.0,0.0,0.0];
+                ka = [0.1,0.1,0.2];
+                kd = [0.1,0.1,0.2];
                 ks = [0.5,0.5,0.5];
                 li = [0.5,0.5,0.5];
-                q = 1.0;
+                q = 10000.0;
 		}
 
 		gl.uniform1i(backgroundShader.colorMode, modeNum);
