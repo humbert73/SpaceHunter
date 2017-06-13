@@ -395,6 +395,10 @@ void main(void) {
         }
         event.preventDefault();
     }
+    
+    function onChange() {
+		this.blur();
+	}
 
     // animation
     var lastTime = 0;
@@ -406,9 +410,13 @@ void main(void) {
             heightfield.setParameters(elapsed);
             spaceship.setParameters(elapsed);
             background.setParameters(elapsed);
-            rocket.setParameters(elapsed);
+            
+            if( !onPause )
+				rocket.setParameters(elapsed);
         }
         lastTime = timeNow;
+        
+        document.querySelector('#mode').disabled = !onPause;
     }
 
     function tick() {
@@ -422,6 +430,7 @@ void main(void) {
     function webGLStart() {
         // initialisation du canvas et des objets OpenGL
         var canvas = document.getElementById("SpaceShip");
+		var mode = document.querySelector( '#mode' );
         initGL(canvas);
 
         // init FBO
@@ -450,7 +459,7 @@ void main(void) {
         /* Mouse and keyboard interaction functions */
         canvas.addEventListener('mousedown', mouseClic, true);
         canvas.addEventListener('mousemove', mouseMove, true);
-        //canvas.addEventListener('mouseup', tbMouseUp, true);
+		mode.addEventListener('change', onChange, true);
 
         document.onkeypress = handleKeyPress;
         /*document.onkeyup = handleKeyUp;*/
@@ -465,13 +474,13 @@ void main(void) {
 </head>
 
 <body onload="webGLStart();"  style="width: 800px; margin: 0; padding: 0; position: relative;">
-	<canvas id="SpaceShip" style="border: none; /*margin: auto; display: block;*/" width="800" height="800"></canvas>
+	<canvas id="SpaceShip" style="border: none;" width="800" height="800"></canvas>
 	<h1 style="text-align: center; width:400px; position:absolute; top: 0; left: 0; background: rgba(255, 255, 255, 0.5); margin: 0; padding: 10px 0;" id="ui-score" >Current score: <span>0</span></h1>
 	<h1 style="text-align: center; width:400px; position:absolute; top: 0; left: 400px; background: rgba(255, 255, 255, 0.5); margin: 0; padding: 10px 0;" id="ui-life">Life: <span>0</span></h1>
     <div>
     <form name="parameters">
-        <label>Mode : (mode disponible : normal, psycho, tempete, caverne, mars</label>
-        <select name="mode" size="1">
+        <label for="mode">Mode: </label>
+        <select id="mode" name="mode" size="1">
             <option>normal
             <option>psycho
             <option>tempete
