@@ -334,7 +334,7 @@ void main(void) {
             }
         }
 	
-		document.querySelector('#ui-life > span').innerText = spaceship.life;
+		
     }
 
     // une bonne mani�re de gerer les evenements claviers
@@ -366,6 +366,10 @@ void main(void) {
 			currentScore = 0;
 			spaceship.initParameters();
 			onPause = true;
+			
+			for ( var i in rockets )
+				delete rockets[ i ];
+			
 			// TODO Do new game support
 		}
 
@@ -379,7 +383,7 @@ void main(void) {
     }
 
 	function handleKeys() {
- 		document.querySelector('#ui-score > span').innerText = currentScore;
+ 
 	}
 
     function mouseMove(event) {
@@ -396,7 +400,7 @@ void main(void) {
     function mouseClic(event) {
 	    if ( !onPause) {
             rocket = new Rocket();
-	        //rocket.drawn = true;
+	        rocket.drawn = true;
 	        var x = 2.0 * (event.x / gl.viewportWidth) - 1.0;
 	        var y = -(2.0 * (event.y / gl.viewportHeight) - 1.0);
             rocket.setPosition(x,y);
@@ -420,18 +424,25 @@ void main(void) {
             spaceship.setParameters(elapsed);
             background.setParameters(elapsed);
             
-            if( !onPause )
-				rocket.setParameters(elapsed);
-            // Animate each rockets
-            for (i in rockets) {
-                rocket = rockets[i];
-                rocket.setParameters(elapsed);
-            }
+			// Animate each rockets
+			if ( !onPause ) {
+				for ( var i in rockets ) {
+					rocket = rockets[ i ];
+					rocket.setParameters( elapsed );
+				}
+				
+				if( timeNow% 100  )
+					currentScore+=0.01;
+			}
+				
             //rocket.setParameters(elapsed);
         }
         lastTime = timeNow;
         
         document.querySelector('#mode').disabled = !onPause;
+		document.querySelector('.infos').style.display = ( onPause ) ? 'block' : 'none' ;
+		document.querySelector('#ui-life > span').innerText = spaceship.life;
+		document.querySelector('#ui-score > span').innerText = Math.round( currentScore ) * 10;
     }
 
     function tick() {
@@ -484,13 +495,23 @@ void main(void) {
     }
 
 </script>
+	<link rel="stylesheet" href="style.css" >
 
 </head>
 
-<body onload="webGLStart();"  style="width: 800px; margin: 0; padding: 0; position: relative;">
-	<canvas id="SpaceShip" style="border: none;" width="800" height="800"></canvas>
-	<h1 style="text-align: center; width:400px; position:absolute; top: 0; left: 0; background: rgba(255, 255, 255, 0.5); margin: 0; padding: 10px 0;" id="ui-score" >Current score: <span>0</span></h1>
-	<h1 style="text-align: center; width:400px; position:absolute; top: 0; left: 400px; background: rgba(255, 255, 255, 0.5); margin: 0; padding: 10px 0;" id="ui-life">Life: <span>0</span></h1>
+<body onload="webGLStart();" >
+	<canvas id="SpaceShip" width="800" height="800"></canvas>
+	<h1 id="ui-score" >Current score: <span>0</span></h1>
+	<h1 id="ui-life">Life: <span>0</span></h1>
+	<div class="infos" >
+		<h2 >PAUSE</h2 >
+		<p >
+			Press <kbd >P</kbd > to set or unset pause<br />
+			Press <kbd >N</kbd > for a new game<br/><br/>
+			
+			Change mode is allowed only when the game are on PAUSE
+		</p >
+	</div >
     <div>
     <form name="parameters">
         <label for="mode">Mode: </label>
@@ -502,6 +523,7 @@ void main(void) {
             <option>mars
         </select>
     </form>
+		<kbd>P</kbd>: Pause -- <kbd>N</kbd>: New game
     </div>
 </body>
 </html>
