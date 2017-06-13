@@ -1,0 +1,33 @@
+body {
+	width:    800px;
+	margin:   0;
+	padding:  0;
+	position: relative;
+}
+
+body > canvas { border: none; }
+
+body > h1 {
+	text-align: center;
+	width:      400px;
+	position:   absolute; top: 0;
+	background: rgba(255, 255, 255, 0.5);
+	margin:     0;
+	padding:    10px 0;
+}
+
+body > h1#ui-score { left: 0; }
+
+body > h1#ui-life { left: 400px; }
+
+body > .infos {
+	position: absolute;
+	top:0;
+	left:0;
+	margin: 50%;
+	background: rgba(255, 255, 255, 0.5);
+	padding: 15px;
+	transform: translate(-50%, -50%);
+	min-width:200px;
+	text-align: center;
+}
