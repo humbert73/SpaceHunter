@@ -453,8 +453,7 @@ void main(void) {
     function contactRocket() {
       for(i in rockets) {
         rocket = rockets[i];
-        if((rocket.position[0] + (rocket.width / 2.5)).toFixed(1) >= invader.position[0] - (invader.width / 2.5) && (rocket.position[0] - (rocket.width / 2.5)).toFixed(1) <= invader.position[0] + (invader.width / 2.5) && (rocket.position[1] + (rocket.height / 2.5)).toFixed(1) == invader.position[1] - (invader.height / 2)) {
-          console.log("touché");
+        if(isTouched(rocket, invader)) {
           rockets.splice(i, -1);
           delete rockets[i];
           return true;
@@ -462,6 +461,10 @@ void main(void) {
           return false;
         }
       }
+    }
+
+    function isTouched(corp1, corp2) {
+      return (corp1.position[0] + (corp1.width / 2.5)).toFixed(1) >= corp2.position[0] - (corp2.width / 2.5) && (corp1.position[0] - (corp1.width / 2.5)).toFixed(1) <= corp2.position[0] + (corp2.width / 2.5) && (corp1.position[1] + (corp1.height / 2.5)).toFixed(1) == corp2.position[1] - (corp2.height / 2)
     }
 
 
