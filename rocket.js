@@ -76,8 +76,8 @@ function Rocket() {
 }
 
 Rocket.prototype.initParameters = function () {
-    this.width    = 0.2;
-    this.height   = 0.2;
+    this.width    = 0.1;
+    this.height   = 0.1;
     this.position = [ 0.0, 0.0 ];
     this.texture  = initTexture( 'images/rocket.png' );
     this.drawn = true;
