@@ -80,11 +80,14 @@ Rocket.prototype.initParameters = function () {
     this.height   = 0.2;
     this.position = [ 0.0, 0.0 ];
     this.texture  = initTexture( 'images/rocket.png' );
+    this.drawn = true;
 };
 
 Rocket.prototype.setParameters = function(elapsed) {
     // on pourrait animer des choses ici
-        this.position[1] = this.position[1] + 0.01;
+    this.position[1] = this.position[1] + 0.01;
+    this.drawn = (-(2.0 * (this.position[1] + (this.height/2) / gl.viewportHeight) - 3.0)) > 1 ;
+
 }
 
 Rocket.prototype.setPosition = function(x,y) {
