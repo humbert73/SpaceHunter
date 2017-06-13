@@ -327,7 +327,6 @@ void main(void) {
         // dessin d'une rocket
         for (var i in rockets) {
             var rocket = rockets[i];
-            console.log(rocket.drawn);
             if (rocket.drawn) {
                 gl.useProgram(rocket.shader());
                 rocket.sendUniformVariables();
