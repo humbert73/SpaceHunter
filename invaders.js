@@ -8,18 +8,16 @@ function initInvaderShader() {
 
     // recupere la localisation de l'attribut dans lequel on souhaite acceder aux positions
     invaderShader.vertexPositionAttribute = gl.getAttribLocation(invaderShader, "aVertexPosition");
-    gl.enableVertexAttribArray(invaderShader.vertexPositionAttribute); // active cet attribut 
+    gl.enableVertexAttribArray(invaderShader.vertexPositionAttribute); // active cet attribut
 
-    // pareil pour les coordonnees de texture 
+    // pareil pour les coordonnees de texture
     invaderShader.vertexCoordAttribute = gl.getAttribLocation(invaderShader, "aVertexCoord");
     gl.enableVertexAttribArray(invaderShader.vertexCoordAttribute);
 
     // adresse de la variable uniforme uOffset dans le shader
     invaderShader.positionUniform = gl.getUniformLocation(invaderShader, "uPosition");
     invaderShader.textureUniform = gl.getUniformLocation(invaderShader, "uTexture");
-
     invaderShader.maTextureUniform = gl.getUniformLocation(invaderShader, "uMaTexture");
-
     invaderShader.canalAlpha = gl.getUniformLocation(invaderShader, "uAlpha");
 
     console.log("invader shader initialized");
@@ -77,10 +75,13 @@ Invader.prototype.initParameters = function () {
     this.height   = 0.2;
     this.position = [ 0.5, 0.7 ];
     this.texture  = initTexture( 'images/Bigboy.png' );
+    this.drawn = true;
 };
 
 Invader.prototype.setParameters = function(elapsed) {
     // on pourrait animer des choses ici
+    this.setPosition(Math.sin(this.position[0]), this.position[1]-0.005)
+    //this.position[0] = Math.sin(this.position[0]);
 }
 
 Invader.prototype.setPosition = function(x,y) {
@@ -110,11 +111,11 @@ Invader.prototype.draw = function() {
     gl.uniform1i(invaderShader.maTextureUniform, 0); // on dit au shader que maTextureUniform se trouve sur l'unite de texture 0
 
     gl.enable(gl.BLEND);
-    gl.blendFunc(gl.SRC_COLOR, gl.ONE_MINUS_SRC_ALPHA);
+    gl.disable(gl.DEPTH_TEST);
+    gl.blendEquation( gl.FUNC_ADD );
+    gl.blendFunc( gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA );
 
     // dessine les buffers actifs
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.triangles);
     gl.drawElements(gl.TRIANGLES, this.triangles.numItems, gl.UNSIGNED_SHORT, 0);
 }
-
-
