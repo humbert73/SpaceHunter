@@ -80,7 +80,7 @@ Invader.prototype.initParameters = function () {
 
 Invader.prototype.setParameters = function(elapsed) {
     // on pourrait animer des choses ici
-    console.log(this.position[0]);
+    //console.log(this.position[0]);
     this.setPosition(this.position[0]+0.01*Math.cos(this.position[1]*10), this.position[1]-0.005)
     //this.position[0] = Math.sin(this.position[0]);
 }
