@@ -287,7 +287,7 @@ void main(void) {
     var invader; // l'objet invader, sa géométrie, son shader, sa maman
     var rocket; // l'objet rocket, sa géométrie, son shader, son papa
     var rockets = []; // Le tableau de rocket dessinées
-	var invaders = [] // tableau d'invaders
+	var invaders = []; // tableau d'invaders
 
     function drawScene() {
         // initialisation du viewport
@@ -330,8 +330,8 @@ void main(void) {
                 rocket.sendUniformVariables();
                 rocket.draw();
             } else {
-                rockets.splice(i, -1);
                 delete rockets[i];
+				rockets.splice(i, 1);
             }
         }
 
@@ -395,8 +395,8 @@ void main(void) {
 	    if ( !onPause) {
             rocket = new Rocket();
 	        rocket.drawn = true;
-	        var x = 2.0 * (event.x / gl.viewportWidth) - 1.0;
-	        var y = -(2.0 * (event.y / gl.viewportHeight) - 1.0);
+			var x = spaceship.position[0];
+			var y = spaceship.position[1];
             rocket.setPosition(x,y);
             rockets.push(rocket);
         }
@@ -431,11 +431,11 @@ void main(void) {
             //rocket.setParameters(elapsed);
         }
         lastTime = timeNow;
-        
-        document.querySelector('#mode').disabled = !onPause;
-		document.querySelector('.infos').style.display = ( onPause ) ? 'block' : 'none' ;
-		document.querySelector('#ui-life > span').innerText = spaceship.life;
-		document.querySelector('#ui-score > span').innerText = Math.round( currentScore ) * 10;
+	
+		document.querySelector( '#mode' ).disabled             = !onPause;
+		document.querySelector( '.infos' ).style.display       = ( onPause ) ? 'block' : 'none';
+		document.querySelector( '#ui-life > span' ).innerText  = spaceship.life;
+		document.querySelector( '#ui-score > span' ).innerText = Math.round( currentScore ) * 10;
     }
 
     function tick() {
