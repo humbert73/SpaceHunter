@@ -31,3 +31,15 @@ body > .infos {
 	min-width:200px;
 	text-align: center;
 }
+
+body > .gameover {
+	position: absolute;
+	top:0;
+	left:0;
+	margin: 50%;
+	background: rgba(255, 255, 255, 0.5);
+	padding: 15px;
+	transform: translate(-50%, -50%);
+	min-width:200px;
+	text-align: center;
+}
