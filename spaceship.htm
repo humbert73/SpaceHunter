@@ -333,13 +333,14 @@ void main(void) {
         // dessin d'une rocket
         for (var r in rockets) {
             var rocket = rockets[r];
-            if (rocket.drawn) {
-                gl.useProgram(rocket.shader());
-                rocket.sendUniformVariables();
-                rocket.draw();
-            } else {
-                delete rockets[r];
+            if ( IsOutOfView( rocket ) ) {
+				delete rockets[r];
 				rockets.splice(r, 1);
+            
+            } else {
+				gl.useProgram(rocket.shader());
+				rocket.sendUniformVariables();
+				rocket.draw();
             }
         }
 
@@ -444,12 +445,12 @@ void main(void) {
 
         }
         lastTime = timeNow;
-        
-        document.querySelector('#mode').disabled = !onPause;
-        document.querySelector('.infos').style.display = ( onPause ) ? 'block' : 'none';
-        document.querySelector('.gameover').style.display = ( onGameOver ) ? 'block' : 'none';
-        document.querySelector('#ui-life > span').innerText = spaceship.life;
-        document.querySelector('#ui-score > span').innerText = Math.round(currentScore) * 10;
+	
+		document.querySelector( '#mode' ).disabled             = !onPause;
+		document.querySelector( '.infos' ).style.display       = ( onPause ) ? 'block' : 'none';
+		document.querySelector( '.gameover' ).style.display    = ( onGameOver ) ? 'block' : 'none';
+		document.querySelector( '#ui-life > span' ).innerText  = spaceship.life;
+		document.querySelector( '#ui-score > span' ).innerText = Math.round( currentScore ) * 10;
     }
 
     function tick() {
