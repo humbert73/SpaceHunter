@@ -361,30 +361,29 @@ void main(void) {
 		var currentKey = event.key;
 
 		// Play / pause handler
-        if (!onGameOver) {
-            if ( currentKey === 'p' )
-                onPause = !onPause;
+        if (currentKey === 'p' && !onGameOver) {
+			onPause = !onPause;
         }
 
-
 		// New game handler
-		if ( currentKey === 'n' ) {
-			currentScore = 0;
-			spaceship.initParameters();
-			onGameOver = false;
-			onPause = true;
-
-			for ( var i in rockets )
-				delete rockets[ i ];
-
-			for ( var i in invaders )
-				delete invaders[ i ];
-
-			// TODO Do new game support
+		if (currentKey === 'n') {
+            initValues();
 		}
 
-		console.log( currentKey, currentScore, spaceship.life );
+        function removeEachElements(elements){
+            for (var i in elements) {
+                delete elements[i];
+			}
+		}
 
+		function initValues() {
+            currentScore = 0;
+            spaceship.initParameters();
+            onGameOver = false;
+            onPause = true;
+            removeEachElements(rockets);
+            removeEachElements(invaders);
+        }
 	}
 
     function mouseMove(event) {
