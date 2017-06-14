@@ -353,6 +353,7 @@ void main(void) {
 	// On pause: TRUE: Game stopped / FASLE: Game run
 	var onPause = false;
 	var onGameOver = false;
+	var itNewInviders;
 
 	var currentScore = 0;
 
@@ -375,6 +376,9 @@ void main(void) {
 			
 			for ( var i in rockets )
 				delete rockets[ i ];
+			
+			for ( var i in invaders )
+				delete invaders[ i ];
 			
 			// TODO Do new game support
 		}
@@ -497,6 +501,11 @@ void main(void) {
     }
 
     function generateInvaders() {
+    	if( onGameOver ){
+    		clearInterval( itNewInviders );
+    		return;
+		}
+    	
         var randx = Math.floor(Math.random() * 2.01) - 1;
         var y = 1;
         invader = new Invader();
@@ -576,7 +585,7 @@ void main(void) {
             heightfield = new Heightfield();
             background = new Background(fbo.texture(0));
             spaceship = new Spaceship();
-            setInterval(generateInvaders,500);
+			itNewInviders =  setInterval(generateInvaders,500);
         }
 
         function addMouseAndKeyboardInteraction() {
