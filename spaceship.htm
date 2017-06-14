@@ -514,7 +514,7 @@ void main(void) {
     }
 
     function generateInvaders() {
-        var randx = Math.floor(Math.random() * 2.01) - 1;
+        var randx = Math.floor(Math.random() * 2) - 0.5;
         var y = 1;
         invader = new Invader();
         invader.setPosition(randx, y);
