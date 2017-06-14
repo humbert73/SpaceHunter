@@ -421,35 +421,33 @@ void main(void) {
     var lastTime = 0;
     function animate() {
         var timeNow = new Date().getTime();
-        if (lastTime != 0) {
-            // chaque objet est susceptible de s'animer
-            var elapsed = timeNow - lastTime;
-            heightfield.setParameters(elapsed);
-            spaceship.setParameters(elapsed);
-            background.setParameters(elapsed);
 
-            for (i in invaders) {
-                invader = invaders[i];
-                invader.setParameters(elapsed);
-            }
-//            animateInvaders();
-
-            // Animate each rockets
-            if (!onPause) {
-                for (var i in rockets) {
-                    rocket = rockets[i];
-                    rocket.setParameters(elapsed);
-                }
-
-                if (timeNow % 100)
-                    currentScore += 0.01;
+        function animateEachElements(elements, elapsed) {
+            for (var i in elements) {
+                element = elements[i];
+                element.setParameters(elapsed);
             }
         }
+
+        function updateScoreOverTime(timeNow) {
+            if (timeNow % 100) {
+                currentScore += 0.01;
+            }
+        }
+
+        if (lastTime != 0 && !onPause) {
+			var elapsed = timeNow - lastTime;
+
+			heightfield.setParameters(elapsed);
+			spaceship.setParameters(elapsed);
+			background.setParameters(elapsed);
+
+			animateEachElements(rockets, elapsed);
+			animateEachElements(invaders, elapsed);
+
+			updateScoreOverTime(timeNow);
+        }
         lastTime = timeNow;
-
-        function animateInvaders() {
-
-		}
 
         document.querySelector('#mode').disabled = !onPause;
         document.querySelector('.infos').style.display = ( onPause ) ? 'block' : 'none';
