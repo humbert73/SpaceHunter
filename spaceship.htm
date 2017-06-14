@@ -366,7 +366,12 @@ void main(void) {
 
 		// Play / pause handler
         if (currentKey === 'p' && !onGameOver) {
-			onPause = !onPause;
+            onPause = !onPause;
+            if (onPause) {
+                clearInterval(spawnInvaderInterval);
+            } else {
+                initSpawnInvaderInterval();
+            }
         }
 
 		// New game handler
@@ -506,9 +511,10 @@ void main(void) {
     function generateInvaders() {
         var randX = 1*Math.random()-0.5;
     	if( onGameOver ){
-    		clearInterval( spawnInvaderInterval );
+    		clearInterval(spawnInvaderInterval);
     		return;
 		}
+
         var y = 1;
         invader = new Invader();
         invader.setPosition(randX, y);
