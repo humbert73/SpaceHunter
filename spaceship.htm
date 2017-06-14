@@ -284,7 +284,7 @@ void main(void) {
     var invader; // l'objet invader, sa géométrie, son shader, sa maman
     var rocket; // l'objet rocket, sa géométrie, son shader, son papa
     var rockets = []; // Le tableau de rocket dessinées
-	var invaders = [] // tableau d'invaders
+	var invaders = []; // tableau d'invaders
 
     function drawScene() {
         // initialisation du viewport
@@ -353,6 +353,7 @@ void main(void) {
 
 	// On pause: TRUE: Game stopped / FASLE: Game run
 	var onPause = false;
+	var onGameOver = false;
 
 	var currentScore = 0;
 
@@ -362,13 +363,17 @@ void main(void) {
 		var currentKey = event.key;
 
 		// Play / pause handler
-		if ( currentKey === 'p' )
-			onPause = !onPause;
+        if (!onGameOver) {
+            if ( currentKey === 'p' )
+                onPause = !onPause;
+        }
+
 
 		// New game handler
 		if ( currentKey === 'n' ) {
 			currentScore = 0;
 			spaceship.initParameters();
+			onGameOver = false;
 			onPause = true;
 
 			for ( var i in rockets )
@@ -392,7 +397,7 @@ void main(void) {
 
     function mouseMove(event) {
 
-	    if ( !onPause ) {
+	    if ( !onPause && !onGameOver ) {
 		    // controle de la position du vaisseau en fonction de la souris
 		    // la position est remapp�e entre -1 et 1 pour cela
 		    var newx = 2.0 * (event.clientX / gl.viewportWidth) - 1.0;
@@ -402,7 +407,7 @@ void main(void) {
     }
 
     function mouseClic(event) {
-	    if ( !onPause) {
+	    if ( !onPause && !onGameOver) {
             rocket = new Rocket();
 	        rocket.drawn = true;
 	        var x = 2.0 * (event.x / gl.viewportWidth) - 1.0;
@@ -419,8 +424,31 @@ void main(void) {
 
     // animation
     var lastTime = 0;
+
     function animate() {
         var timeNow = new Date().getTime();
+
+        if (willBeAnimate()) {
+			var elapsed = timeNow - lastTime;
+
+			heightfield.setParameters(elapsed);
+			spaceship.setParameters(elapsed);
+			background.setParameters(elapsed);
+
+			animateEachElements(rockets, elapsed);
+			animateEachElements(invaders, elapsed);
+
+			updateScoreOverTime(timeNow);
+        }
+        lastTime = timeNow;
+
+        updateDisplay();
+
+
+		// declarations
+        function willBeAnimate() {
+            return lastTime != 0 && !onPause && !onGameOver;
+        }
 
         function animateEachElements(elements, elapsed) {
             for (var i in elements) {
@@ -435,24 +463,13 @@ void main(void) {
             }
         }
 
-        if (lastTime != 0 && !onPause) {
-			var elapsed = timeNow - lastTime;
-
-			heightfield.setParameters(elapsed);
-			spaceship.setParameters(elapsed);
-			background.setParameters(elapsed);
-
-			animateEachElements(rockets, elapsed);
-			animateEachElements(invaders, elapsed);
-
-			updateScoreOverTime(timeNow);
+        function updateDisplay() {
+            document.querySelector('#mode').disabled = !onPause;
+            document.querySelector('.infos').style.display = ( onPause ) ? 'block' : 'none';
+            document.querySelector('.gameover').style.display = ( onGameOver ) ? 'block' : 'none';
+            document.querySelector('#ui-life > span').innerText = spaceship.life;
+            document.querySelector('#ui-score > span').innerText = Math.round(currentScore) * 10;
         }
-        lastTime = timeNow;
-
-        document.querySelector('#mode').disabled = !onPause;
-        document.querySelector('.infos').style.display = ( onPause ) ? 'block' : 'none';
-        document.querySelector('#ui-life > span').innerText = spaceship.life;
-        document.querySelector('#ui-score > span').innerText = Math.round(currentScore) * 10;
     }
 
     function tick() {
@@ -467,8 +484,7 @@ void main(void) {
             rocket = rockets[i];
             for (j in invaders) {
                 invader = invaders[j];
-                console.log("Touch = " + hasCollision(rocket, invader))
-                if (hasCollision(rocket, invader))     {
+                if (hasCollision(rocket, invader)) {
                     rocket.drawn = false;
                     invader.drawn = false;
                     rockets.splice(i, -1);
@@ -483,10 +499,11 @@ void main(void) {
     function contactInvader() {
         for (i in invaders) {
             invader = invaders[i];
-            if(hasCollision(spaceship, invader)) {
+            if(hasCollision(spaceship, invader) && !onPause) {
                 spaceship.reduceLife();
                 if (! spaceship.isAlive()) {
 					//TODO: doSomeThingWhenYouLoose
+                    onGameOver = true;
 				}
             }
 		}
@@ -514,7 +531,6 @@ void main(void) {
             return (corpt1_ytop <= corpt2_ytop && corpt1_ytop >= corpt2_ybottom) || (corpt1_ybottom <= corpt2_ytop && corpt1_ybottom >= corpt2_ybottom);
         }
     }
-
 
     function webGLStart() {
         // initialisation du canvas et des objets OpenGL
@@ -589,15 +605,22 @@ void main(void) {
 			Change mode is allowed only when the game are on PAUSE
 		</p >
 	</div >
+
+    <div class="gameover">
+        <h2>GAME OVER</h2>
+        <p>
+            The game is over, press <kbd>N</kbd> to start a new game.
+        </p>
+    </div>
     <div>
     <form name="parameters">
         <label for="mode">Mode (change only available on pause):</label>
         <select id="mode" name="mode" size="1">
-            <option>normal
-            <option>psycho
-            <option>tempete
-            <option>caverne
-            <option>mars
+			<option>normal</option>
+			<option>psycho</option>
+			<option>tempete</option>
+			<option>caverne</option>
+			<option>mars</option>
         </select>
     </form>
 		<kbd>P</kbd>: Pause -- <kbd>N</kbd>: New game
