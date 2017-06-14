@@ -422,6 +422,7 @@ void main(void) {
 
     function animate() {
         var timeNow = new Date().getTime();
+
 		if (willBeAnimate()) {
 			var elapsed = timeNow - lastTime;
 
@@ -446,7 +447,7 @@ void main(void) {
 
         function animateEachElements(elements, elapsed) {
             for (var i in elements) {
-                element = elements[i];
+                var element = elements[i];
                 element.setParameters(elapsed);
             }
         }
@@ -503,14 +504,14 @@ void main(void) {
     }
 
     function generateInvaders() {
-        var randx = Math.floor(Math.random() * 2) - 0.5;
+        var randX = 1*Math.random()-0.5;
     	if( onGameOver ){
     		clearInterval( spawnInvaderInterval );
     		return;
 		}
         var y = 1;
         invader = new Invader();
-        invader.setPosition(randx, y);
+        invader.setPosition(randX, y);
         invaders.push(invader);
     }
 
