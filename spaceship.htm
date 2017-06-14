@@ -353,11 +353,15 @@ void main(void) {
 	// On pause: TRUE: Game stopped / FASLE: Game run
 	var onPause = false;
 	var onGameOver = false;
-	var itNewInviders;
+	var spawnInvaderInterval;
 
 	var currentScore = 0;
 
-	function handleKeyPress( event ) {
+    function initSpawnInvaderInterval() {
+        spawnInvaderInterval = setInterval(generateInvaders,500);
+    }
+
+    function handleKeyPress( event ) {
 		var currentKey = event.key;
 
 		// Play / pause handler
@@ -381,6 +385,7 @@ void main(void) {
             spaceship.initParameters();
             onGameOver = false;
             onPause = true;
+            initSpawnInvaderInterval();
             removeEachElements(rockets);
             removeEachElements(invaders);
         }
@@ -426,8 +431,6 @@ void main(void) {
 
 			animateEachElements(rockets, elapsed);
 			animateEachElements(invaders, elapsed);
-
-			updateScoreOverTime(timeNow);
 
 			updateScoreOverTime(timeNow);
         }
@@ -502,7 +505,7 @@ void main(void) {
     function generateInvaders() {
         var randx = Math.floor(Math.random() * 2) - 0.5;
     	if( onGameOver ){
-    		clearInterval( itNewInviders );
+    		clearInterval( spawnInvaderInterval );
     		return;
 		}
         var y = 1;
@@ -535,11 +538,11 @@ void main(void) {
     }
 
 	function IsOutOfView( corp ) {
-		// X  check --- Y check
-		var view = {
-				position: [ 0, 0 ],
-				width:    2
-			};
+        // X  check --- Y check
+        var view = {
+            position: [0, 0],
+            width: 2
+        };
 
 		return !hasCollision( corp, view );
 	}
@@ -556,6 +559,7 @@ void main(void) {
 
         initShaders();
         initObjects();
+        initSpawnInvaderInterval();
 
         // la couleur de fond sera noire
         gl.clearColor(0.0, 0.0, 0.0, 1.0);
@@ -583,7 +587,6 @@ void main(void) {
             heightfield = new Heightfield();
             background = new Background(fbo.texture(0));
             spaceship = new Spaceship();
-			itNewInviders =  setInterval(generateInvaders,500);
         }
 
         function addMouseAndKeyboardInteraction() {
