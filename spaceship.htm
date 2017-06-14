@@ -413,44 +413,53 @@ void main(void) {
 
     // animation
     var lastTime = 0;
+
     function animate() {
         var timeNow = new Date().getTime();
-        if (lastTime != 0) {
-            if (!onGameOver) {
-                // chaque objet est susceptible de s'animer
-                var elapsed = timeNow - lastTime;
-                heightfield.setParameters(elapsed);
-                spaceship.setParameters(elapsed);
-                background.setParameters(elapsed);
-				
-                // Animate each invaders
-                if (!onPause) {
-                    for (i in invaders) {
-                        invader = invaders[i];
-                        invader.setParameters(elapsed);
-                    }
-                }
+		if (willBeAnimate()) {
+			var elapsed = timeNow - lastTime;
+		
+			heightfield.setParameters(elapsed);
+			spaceship.setParameters(elapsed);
+			background.setParameters(elapsed);
+		
+			animateEachElements(rockets, elapsed);
+			animateEachElements(invaders, elapsed);
+		
+			updateScoreOverTime(timeNow);
 
-                // Animate each rockets
-                if (!onPause) {
-                    for (var i in rockets) {
-                        rocket = rockets[i];
-                        rocket.setParameters(elapsed);
-                    }
-
-                    if (timeNow % 100)
-                        currentScore += 0.01;
-                }
-            }
-
+			updateScoreOverTime(timeNow);
         }
         lastTime = timeNow;
-	
-		document.querySelector( '#mode' ).disabled             = !onPause;
-		document.querySelector( '.infos' ).style.display       = ( onPause ) ? 'block' : 'none';
-		document.querySelector( '.gameover' ).style.display    = ( onGameOver ) ? 'block' : 'none';
-		document.querySelector( '#ui-life > span' ).innerText  = spaceship.life;
-		document.querySelector( '#ui-score > span' ).innerText = Math.round( currentScore ) * 10;
+		
+        updateDisplay();
+
+
+		// declarations
+        function willBeAnimate() {
+            return lastTime != 0 && !onPause && !onGameOver;
+        }
+
+        function animateEachElements(elements, elapsed) {
+            for (var i in elements) {
+                element = elements[i];
+                element.setParameters(elapsed);
+            }
+        }
+
+        function updateScoreOverTime(timeNow) {
+            if (timeNow % 100) {
+                currentScore += 0.01;
+            }
+        }
+
+        function updateDisplay() {
+			document.querySelector( '#mode' ).disabled             = !onPause;
+			document.querySelector( '.infos' ).style.display       = ( onPause ) ? 'block' : 'none';
+			document.querySelector( '.gameover' ).style.display    = ( onGameOver ) ? 'block' : 'none';
+			document.querySelector( '#ui-life > span' ).innerText  = spaceship.life;
+			document.querySelector( '#ui-score > span' ).innerText = Math.round( currentScore ) * 10;
+		}
     }
 
     function tick() {
@@ -469,8 +478,8 @@ void main(void) {
                     invader.drawn = false;
 					delete rockets[i];
 					delete invaders[j];
-                    rockets.splice(i, -1);
-                    invaders.splice(j, -1);
+                    rockets.splice(i, 1);
+                    invaders.splice(j, 1);
                 }
             }
         }
