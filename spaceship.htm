@@ -515,9 +515,9 @@ void main(void) {
     }
 
     function generateInvaders() {
-        var randX = 1*Math.random()-0.5;
+        var randX = Math.random()-0.5;
         var xTrajectory = 0.8*Math.random()-0.4;
-        var yTrajectory = 1*Math.random()+1;
+        var yTrajectory = Math.random()+1;
 
     	if( onGameOver){
     		clearInterval(spawnInvaderInterval);
