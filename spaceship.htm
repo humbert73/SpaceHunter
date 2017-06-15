@@ -366,15 +366,12 @@ void main(void) {
 		var currentKey = event.key;
 
 		// Play / pause handler
-		if ((currentKey === 'p' && !onGameOver) || currentKey === 'n') {
+		if ((currentKey === 'p' && !onGameOver && !onPause) || currentKey === 'n') {
             clearInterval(spawnInvaderInterval);
         }
 
         if (currentKey === 'p' && !onGameOver) {
-            if (!onPause) {
-                clearInterval(spawnInvaderInterval);
-                console.log( 'OnPause' );
-            } else {
+            if (onPause) {
                 initSpawnInvaderInterval();
             }
 			onPause = !onPause;
