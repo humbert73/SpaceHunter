@@ -371,10 +371,7 @@ void main(void) {
         }
 
         if (currentKey === 'p' && !onGameOver) {
-            if (!onPause) {
-                clearInterval(spawnInvaderInterval);
-                console.log( 'OnPause' );
-            } else {
+            if (onPause) {
                 initSpawnInvaderInterval();
             }
 			onPause = !onPause;
