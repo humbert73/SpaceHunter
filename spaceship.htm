@@ -285,6 +285,7 @@ void main(void) {
     var rocket; // l'objet rocket, sa géométrie, son shader, son papa
     var rockets = []; // Le tableau de rocket dessinées
 	var invaders = []; // tableau d'invaders
+	const UNITE_DE_TEMPS = 0.005;
 
     function drawScene() {
         // initialisation du viewport
@@ -365,6 +366,10 @@ void main(void) {
 		var currentKey = event.key;
 
 		// Play / pause handler
+		if ((currentKey === 'p' && !onGameOver) || currentKey === 'n') {
+            clearInterval(spawnInvaderInterval);
+        }
+
         if (currentKey === 'p' && !onGameOver) {
             onPause = !onPause;
             if (onPause) {
@@ -376,6 +381,7 @@ void main(void) {
 
 		// New game handler
 		if (currentKey === 'n') {
+
             initValues();
 		}
 
@@ -390,7 +396,6 @@ void main(void) {
             spaceship.initParameters();
             onGameOver = false;
             onPause = true;
-            initSpawnInvaderInterval();
             removeEachElements(rockets);
             removeEachElements(invaders);
         }
@@ -510,7 +515,10 @@ void main(void) {
 
     function generateInvaders() {
         var randX = 1*Math.random()-0.5;
-    	if( onGameOver ){
+        var xTrajectory = 0.8*Math.random()-0.4;
+        var yTrajectory = 1*Math.random()+1;
+
+    	if( onGameOver){
     		clearInterval(spawnInvaderInterval);
     		return;
 		}
@@ -518,6 +526,7 @@ void main(void) {
         var y = 1;
         invader = new Invader();
         invader.setPosition(randX, y);
+        invader.setTrajectory(xTrajectory, yTrajectory);
         invaders.push(invader);
     }
 

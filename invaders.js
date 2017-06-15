@@ -76,18 +76,28 @@ Invader.prototype.initParameters = function () {
     this.position = [ 0.5, 0.7 ];
     this.texture  = initTexture( 'images/Bigboy.png' );
     this.drawn = true;
+    this.trajectory = {
+        x: 0*UNITE_DE_TEMPS,
+        y: UNITE_DE_TEMPS
+    };
 };
 
 Invader.prototype.setParameters = function(elapsed) {
     // on pourrait animer des choses ici
     //console.log(this.position[0]);
-    this.setPosition(this.position[0]+0.01*Math.cos(this.position[1]*10), this.position[1]-0.005)
+    // this.setPosition(this.position[0]+0.01*Math.cos(this.position[1]*10), this.position[1]-0.005)
+    this.setPosition(this.position[0]+this.trajectory.x, this.position[1]-this.trajectory.y)
     //this.position[0] = Math.sin(this.position[0]);
 }
 
 Invader.prototype.setPosition = function(x,y) {
     this.position = [x,y];
-}
+};
+
+
+Invader.prototype.setTrajectory = function(x,y) {
+    this.trajectory = { x: x*UNITE_DE_TEMPS, y: y*UNITE_DE_TEMPS};
+};
 
 Invader.prototype.shader = function() {
     return invaderShader;
