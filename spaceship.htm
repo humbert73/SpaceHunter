@@ -352,7 +352,7 @@ void main(void) {
 	// ----------------------------------------------------------------------------------------------------------------
 
 	// On pause: TRUE: Game stopped / FASLE: Game run
-	var onPause = false;
+	var onPause = true;
 	var onGameOver = false;
 	var spawnInvaderInterval;
 
@@ -371,17 +371,17 @@ void main(void) {
         }
 
         if (currentKey === 'p' && !onGameOver) {
-            onPause = !onPause;
-            if (onPause) {
+            if (!onPause) {
                 clearInterval(spawnInvaderInterval);
+                console.log( 'OnPause' );
             } else {
                 initSpawnInvaderInterval();
             }
+			onPause = !onPause;
         }
 
 		// New game handler
 		if (currentKey === 'n') {
-
             initValues();
 		}
 
@@ -398,6 +398,7 @@ void main(void) {
             onPause = true;
             removeEachElements(rockets);
             removeEachElements(invaders);
+			clearInterval(spawnInvaderInterval);
         }
 	}
 
@@ -575,7 +576,7 @@ void main(void) {
 
         initShaders();
         initObjects();
-        initSpawnInvaderInterval();
+        //initSpawnInvaderInterval();
 
         // la couleur de fond sera noire
         gl.clearColor(0.0, 0.0, 0.0, 1.0);
