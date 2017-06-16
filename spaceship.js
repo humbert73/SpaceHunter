@@ -76,7 +76,7 @@ Spaceship.prototype.initParameters = function () {
     this.height = 0.2;
     this.position = [0.0, -0.7];
     this.life = 100;
-    this.texture = initTexture('images/Goliath.png');
+    this.texture = initTexture('images/spaceship.png');
 
 };
 
